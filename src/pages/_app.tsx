@@ -54,13 +54,20 @@ export default function App({ Component, pageProps }: AppProps) {
 
     if (alreadySeen) {
       clearSplashPending();
-      setSplash("done");
-      return;
+      // Defer setState — sync updates in effects trip react-hooks/set-state-in-effect
+      const doneTimer = setTimeout(() => {
+        if (!cancelled) setSplash("done");
+      }, 0);
+      return () => {
+        cancelled = true;
+        clearTimeout(doneTimer);
+      };
     }
 
-    // Show branded splash immediately (CSS cover already hides the page)
-    setSplash("show");
-
+    // CSS cover already hides the page; defer show for the same lint rule
+    const showTimer = setTimeout(() => {
+      if (!cancelled) setSplash("show");
+    }, 0);
     const doneTimer = setTimeout(() => {
       if (cancelled) return;
       setSplash("done");
@@ -74,6 +81,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
     return () => {
       cancelled = true;
+      clearTimeout(showTimer);
       clearTimeout(doneTimer);
     };
   }, []);
