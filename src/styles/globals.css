@@ -215,6 +215,7 @@
 @media (prefers-reduced-motion: reduce) {
   .animate-float,
   .animate-cover-shimmer,
+  .animate-now-playing-in,
   .worm-wave-seg,
   .eq-bars > span {
     animation: none !important;

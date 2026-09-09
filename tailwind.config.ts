@@ -31,6 +31,7 @@ const config: Config = {
         "slide-up": "slideUp 0.5s ease-out",
         "scale-in": "scaleIn 0.3s ease-out",
         float: "float 6s ease-in-out infinite",
+        "now-playing-in": "nowPlayingIn 0.45s ease-out",
       },
       keyframes: {
         fadeIn: {
@@ -48,6 +49,10 @@ const config: Config = {
         float: {
           "0%, 100%": { transform: "translateY(0px)" },
           "50%": { transform: "translateY(-10px)" },
+        },
+        nowPlayingIn: {
+          "0%": { opacity: "0", transform: "translateY(14px) scale(0.96)" },
+          "100%": { opacity: "1", transform: "translateY(0) scale(1)" },
         },
       },
     },
