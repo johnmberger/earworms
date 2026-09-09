@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import LoadingScreen from "@/components/layout/LoadingScreen";
+import { SPLASH_KEY, SPLASH_PENDING_CLASS } from "@/lib/splash";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -11,24 +12,25 @@ const inter = Inter({
   display: "swap",
 });
 
-const SPLASH_KEY = "earworms-splash-seen";
-
 function scrollToTop() {
   window.scrollTo(0, 0);
   document.documentElement.scrollTop = 0;
   document.body.scrollTop = 0;
 }
 
+function clearSplashPending() {
+  document.documentElement.classList.remove(SPLASH_PENDING_CLASS);
+}
+
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
-  // "boot" = deciding; only cover the page when we know we should show splash
+  // "boot" until client knows; CSS ::before covers first-visit paint in the meantime
   const [splash, setSplash] = useState<"boot" | "show" | "done">("boot");
 
   useEffect(() => {
     let prevPath = window.location.pathname;
     const onComplete = (url: string) => {
       const nextPath = url.split("?")[0];
-      // Query-only changes (e.g. duration) keep scroll; page changes jump to top
       if (nextPath !== prevPath) {
         scrollToTop();
       }
@@ -42,22 +44,27 @@ export default function App({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     let cancelled = false;
+
+    let alreadySeen = false;
     try {
-      if (sessionStorage.getItem(SPLASH_KEY) === "1") {
-        // Stay in "boot" — same UI as "done" (no overlay)
-        return;
-      }
+      alreadySeen = sessionStorage.getItem(SPLASH_KEY) === "1";
     } catch {
-      // show splash this visit
+      alreadySeen = false;
     }
 
-    // Defer so we don't sync-setState in the effect body (hydration-safe)
-    const showTimer = setTimeout(() => {
-      if (!cancelled) setSplash("show");
-    }, 0);
+    if (alreadySeen) {
+      clearSplashPending();
+      setSplash("done");
+      return;
+    }
+
+    // Show branded splash immediately (CSS cover already hides the page)
+    setSplash("show");
+
     const doneTimer = setTimeout(() => {
       if (cancelled) return;
       setSplash("done");
+      clearSplashPending();
       try {
         sessionStorage.setItem(SPLASH_KEY, "1");
       } catch {
@@ -67,7 +74,6 @@ export default function App({ Component, pageProps }: AppProps) {
 
     return () => {
       cancelled = true;
-      clearTimeout(showTimer);
       clearTimeout(doneTimer);
     };
   }, []);
