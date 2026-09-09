@@ -14,13 +14,13 @@ import {
   computeListeningDensity,
   type ListeningDensity,
 } from "@/lib/listeningStats";
+import { takeRecentTracksForDisplay, isNowPlayingTrack } from "@/lib/recentTracks";
 import { GetStaticProps } from "next";
 import Link from "next/link";
 import { useState, useEffect, useRef, useCallback } from "react";
 import MetaTags from "@/components/layout/MetaTags";
 import { formatTime, getCurrentDate } from "@/lib/dateUtils";
 
-const DISPLAY_LIMIT = 51;
 const SAMPLE_LIMIT = 200;
 
 type HomeProps = {
@@ -54,7 +54,7 @@ export const getStaticProps: GetStaticProps<HomeProps> = async () => {
     const recent = await getRecentTracks(SAMPLE_LIMIT);
     return {
       props: {
-        tracks: recent.slice(0, DISPLAY_LIMIT),
+        tracks: takeRecentTracksForDisplay(recent),
         density: computeListeningDensity(recent),
       },
       revalidate: 30,
@@ -193,7 +193,7 @@ export default function Home({
               </div>
             </div>
             <p className="text-dark-400">
-              discover what i&apos;ve been listening to
+              what i&apos;ve been listening to lately
             </p>
             <div className="text-xs text-dark-500 mt-1" suppressHydrationWarning>
               last updated: {formatTime(lastUpdated)}
@@ -214,13 +214,13 @@ export default function Home({
                   top
                 </h2>
                 <p className="text-dark-300 text-sm sm:text-base mb-4">
-                  artists, albums, and tracks that got stuck on repeat
+                  artists, albums, and tracks that i have stuck on repeat
                 </p>
                 <Link
                   href="/top"
                   className="inline-flex items-center gap-2 text-pink-300 hover:text-pink-200 transition-colors font-semibold group"
                 >
-                  see the full rankings
+                  full rankings
                   <IconChevronRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
                 </Link>
               </div>
@@ -235,14 +235,13 @@ export default function Home({
                   the numbers
                 </h2>
                 <p className="text-dark-300 text-sm sm:text-base mb-4">
-                  how the week stacked up — and how long i&apos;ve been at
-                  this.
+                  how this week, month, and year has stacked up
                 </p>
                 <Link
                   href="/me"
                   className="inline-flex items-center gap-2 text-pink-300 hover:text-pink-200 transition-colors font-semibold group"
                 >
-                  dig into the stats
+                  my statistics
                   <IconChevronRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
                 </Link>
               </div>
@@ -252,11 +251,11 @@ export default function Home({
           </div>
         }
       >
-        <section>
+        <section className={tracks.some(isNowPlayingTrack) ? "pb-28 sm:pb-32" : undefined}>
           {tracks.length === 0 ? (
             <EmptyState
               title="no recent tracks"
-              message="couldn't fetch recent tracks. might be a temporary last.fm blip or missing config."
+              message="couldn't fetch my recent tracks. might be a temporary last.fm issue. try refreshing."
               actionLabel="try refresh"
               onAction={handleManualRefresh}
             />

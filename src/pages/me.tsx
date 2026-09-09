@@ -97,7 +97,7 @@ export default function StatsPage({ stats }: StatsPageProps) {
     <>
       <MetaTags
         title="the numbers"
-        description="how things stack up — and how long i've been at this."
+        description="in-depth statistics on my listening habits"
         keywords="earworms, listening stats, scrobbles, music stats"
         path="/me"
       />
@@ -113,7 +113,7 @@ export default function StatsPage({ stats }: StatsPageProps) {
                 the numbers
               </h2>
               <p className="text-dark-400 text-sm sm:text-base mb-4">
-                how things stack up — and how long i&apos;ve been at this.
+                the top artists stuck in my ears lately
               </p>
               <DurationControl />
             </>

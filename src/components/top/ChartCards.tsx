@@ -32,6 +32,7 @@ export function SpotlightCard({
   plays,
   image,
   href,
+  nudge,
   priority = false,
 }: {
   label: string;
@@ -40,6 +41,8 @@ export function SpotlightCard({
   plays: number;
   image: string;
   href: string;
+  /** Relative play change, e.g. "38% more than last week" */
+  nudge?: string | null;
   priority?: boolean;
 }) {
   const hasArt = Boolean(image) && !image.includes(LASTFM_IMAGE_PLACEHOLDER);
@@ -70,7 +73,7 @@ export function SpotlightCard({
           <div className="w-full h-full bg-gradient-to-br from-pink-500/30 via-purple-500/20 to-blue-500/30" />
         ) : null}
       </div>
-      <div className="relative flex flex-col items-center w-full min-w-0">
+      <div className="relative flex flex-col items-center w-full min-w-0 flex-1">
         <CoverImage
           name={title}
           image={coverUrl}
@@ -81,17 +84,20 @@ export function SpotlightCard({
         <p className="text-[10px] uppercase tracking-[0.2em] text-pink-300/80 mt-3 mb-1">
           {label}
         </p>
-        <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-pink-200 transition-colors leading-snug line-clamp-2">
+        <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-pink-200 transition-colors leading-snug line-clamp-2 min-h-[2.75rem] sm:min-h-[3.25rem] w-full">
           {title}
         </h3>
-        {subtitle ? (
-          <p className="text-xs text-dark-300 mt-1 line-clamp-1 w-full">
-            {subtitle}
-          </p>
-        ) : null}
-        <p className="text-xs text-dark-400 mt-2 tabular-nums">
-          {formatNumber(plays)} {plays === 1 ? "play" : "plays"}
+        <p className="text-xs text-dark-300 mt-1 line-clamp-1 min-h-[1rem] w-full">
+          {subtitle || "\u00A0"}
         </p>
+        <div className="mt-auto pt-3 w-full">
+          <p className="text-xs text-dark-400 tabular-nums">
+            {formatNumber(plays)} {plays === 1 ? "play" : "plays"}
+          </p>
+          <p className="text-[11px] text-pink-300/70 mt-1.5 tabular-nums min-h-[1.125rem]">
+            {nudge || "\u00A0"}
+          </p>
+        </div>
       </div>
     </a>
   );

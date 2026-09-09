@@ -19,16 +19,8 @@ export default function TrackCard({
     "full"
   );
 
-  const isNowPlaying = track["@attr"]?.nowplaying === "true";
-
   return (
-    <div
-      className={`group track-card h-full flex flex-col ${
-        isNowPlaying
-          ? "ring-2 ring-pink-500/40 shadow-2xl shadow-pink-500/20"
-          : ""
-      }`}
-    >
+    <div className="group track-card h-full flex flex-col">
       <div className="relative aspect-square overflow-hidden rounded-t-3xl">
         <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-white/10 to-white/5 opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out z-10" />
         <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/8 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-1000 ease-out z-10" />
@@ -69,28 +61,12 @@ export default function TrackCard({
           ) : null}
         </div>
 
-        <div className="flex items-center justify-between">
-          {track.date?.uts ? (
-            <div className="flex items-center gap-2 text-xs text-cyan-300 group-hover:text-cyan-200 transition-all duration-500 ease-out">
-              <div className="w-1.5 h-1.5 bg-cyan-400 rounded-full group-hover:bg-cyan-300 transition-all duration-500 ease-out" />
-              <span>{formatTrackDate(track.date.uts)}</span>
-            </div>
-          ) : null}
-
-          {isNowPlaying ? (
-            <div className="bg-white/10 border border-white/20 text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg md:backdrop-blur-xl">
-              <div className="flex items-center gap-2.5">
-                <div className="eq-bars" aria-hidden="true">
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                </div>
-                <span>now playing</span>
-              </div>
-            </div>
-          ) : null}
-        </div>
+        {track.date?.uts ? (
+          <div className="flex items-center gap-2 text-xs text-cyan-300 group-hover:text-cyan-200 transition-all duration-500 ease-out">
+            <div className="w-1.5 h-1.5 bg-cyan-400 rounded-full group-hover:bg-cyan-300 transition-all duration-500 ease-out" />
+            <span>{formatTrackDate(track.date.uts)}</span>
+          </div>
+        ) : null}
       </div>
     </div>
   );

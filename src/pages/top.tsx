@@ -2,9 +2,11 @@ import { useMemo } from "react";
 import { GetServerSideProps } from "next";
 import {
   getChartTops,
+  getSpotlightWeekOverWeek,
   ChartArtistView,
   TopAlbumView,
   TopTrackView,
+  type SpotlightWeekOverWeek,
 } from "@/lib/lastfm";
 import { CHART_PAGE_CACHE_CONTROL } from "@/lib/ttlCache";
 import EmptyState from "@/components/layout/EmptyState";
@@ -18,13 +20,8 @@ import MetaTags from "@/components/layout/MetaTags";
 import PageShell, { PageFooterLinks } from "@/components/layout/PageShell";
 import { TopPeriodSkeleton } from "@/components/top/TopPeriodSkeleton";
 import { RankRow, SpotlightCard } from "@/components/top/ChartCards";
-import { formatNumber, getArtistChartStats } from "@/lib/dateUtils";
+import { getArtistChartStats } from "@/lib/dateUtils";
 import { sizedLastfmImage } from "@/lib/lastfm/images";
-import {
-  IconDisc,
-  IconMusic,
-  IconUsers,
-} from "@/components/shared/icons";
 import {
   ChartPeriod,
   parsePeriod,
@@ -37,6 +34,13 @@ type TopsPageProps = {
   albums: TopAlbumView[];
   tracks: TopTrackView[];
   period: ChartPeriod;
+  wow: SpotlightWeekOverWeek;
+};
+
+const EMPTY_WOW: SpotlightWeekOverWeek = {
+  artist: null,
+  album: null,
+  track: null,
 };
 
 export const getServerSideProps: GetServerSideProps<TopsPageProps> = async (
@@ -46,12 +50,20 @@ export const getServerSideProps: GetServerSideProps<TopsPageProps> = async (
   const period = parsePeriod(context.query.period);
   try {
     const payload = await getChartTops(period);
+    const wow =
+      period === "7day"
+        ? await getSpotlightWeekOverWeek(payload).catch((error) => {
+            console.error("Week-over-week fetch failed", error);
+            return EMPTY_WOW;
+          })
+        : EMPTY_WOW;
     return {
       props: {
         artists: payload.artists,
         albums: payload.albums,
         tracks: payload.tracks,
         period,
+        wow,
       },
     };
   } catch (error) {
@@ -62,12 +74,13 @@ export const getServerSideProps: GetServerSideProps<TopsPageProps> = async (
         albums: [],
         tracks: [],
         period,
+        wow: EMPTY_WOW,
       },
     };
   }
 };
 
-function TopsBody({ artists, albums, tracks, period }: TopsPageProps) {
+function TopsBody({ artists, albums, tracks, period, wow }: TopsPageProps) {
   const artistPlays = useMemo(
     () => artists.map((a) => parseInt(a.playcount, 10) || 0),
     [artists]
@@ -108,7 +121,7 @@ function TopsBody({ artists, albums, tracks, period }: TopsPageProps) {
             <h2 className="text-sm uppercase tracking-[0.18em] text-dark-400 mb-4 sm:mb-5">
               #1s · {periodTitleSuffix(period)}
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 items-start">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 items-stretch">
               {topArtist ? (
                 <SpotlightCard
                   label="#1 artist"
@@ -116,6 +129,7 @@ function TopsBody({ artists, albums, tracks, period }: TopsPageProps) {
                   plays={parseInt(topArtist.playcount, 10) || 0}
                   image={topArtist.image}
                   href={topArtist.url}
+                  nudge={wow.artist?.label}
                   priority
                 />
               ) : null}
@@ -127,6 +141,7 @@ function TopsBody({ artists, albums, tracks, period }: TopsPageProps) {
                   plays={parseInt(topAlbum.playcount, 10) || 0}
                   image={topAlbum.image}
                   href={topAlbum.url}
+                  nudge={wow.album?.label}
                   priority
                 />
               ) : null}
@@ -138,52 +153,10 @@ function TopsBody({ artists, albums, tracks, period }: TopsPageProps) {
                   plays={parseInt(topTrack.playcount, 10) || 0}
                   image={topTrack.image}
                   href={topTrack.url}
+                  nudge={wow.track?.label}
                   priority
                 />
               ) : null}
-            </div>
-          </section>
-
-          <section>
-            <h2 className="text-sm uppercase tracking-[0.18em] text-dark-400 mb-4 sm:mb-5">
-              at a glance
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-              {[
-                {
-                  heading: "artists",
-                  value: formatNumber(artists.length),
-                  icon: IconUsers,
-                },
-                {
-                  heading: "albums",
-                  value: formatNumber(albums.length),
-                  icon: IconDisc,
-                },
-                {
-                  heading: "tracks",
-                  value: formatNumber(tracks.length),
-                  icon: IconMusic,
-                },
-              ].map((group) => {
-                const Icon = group.icon;
-                return (
-                  <div
-                    key={group.heading}
-                    className="panel px-4 py-5 text-center"
-                  >
-                    <div className="flex justify-center mb-3 text-pink-300/70">
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-pink-300/80 mb-3">
-                      {group.heading}
-                    </p>
-                    <p className="text-2xl sm:text-3xl font-bold text-white tabular-nums leading-none tracking-tight">
-                      {group.value}
-                    </p>
-                  </div>
-                );
-              })}
             </div>
           </section>
 
@@ -301,7 +274,7 @@ function TopsBody({ artists, albums, tracks, period }: TopsPageProps) {
 }
 
 export default function TopsPage(props: TopsPageProps) {
-  const pageTitle = "top artists, albums, and tracks";
+  const pageTitle = "number ones · my top artists, albums, and tracks";
   const periodLabel = durationControlLabel(props.period);
 
   return (
@@ -320,9 +293,6 @@ export default function TopsPage(props: TopsPageProps) {
           ]}
           header={
             <>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4">
-                {pageTitle}
-              </h2>
               <DurationControl />
             </>
           }

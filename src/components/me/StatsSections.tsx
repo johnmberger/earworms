@@ -181,7 +181,7 @@ export function LifetimeSection({
         <StatCard
           label="scrobbles"
           value={profile ? formatNumber(profile.playcount) : "—"}
-          hint="everything last.fm has counted so far"
+          hint="total last.fm scrobbles"
         />
         <StatCard
           label="listening for"
