@@ -7,13 +7,13 @@ export default function NowPlayingStrip({ track }: { track: Track }) {
   const art = sizedLastfmImage(pickImageUrl(track.image, "thumb"), "thumb");
   const artist = track.artist?.["#text"] ?? "";
   const album = track.album?.["#text"] ?? "";
-  // Remount the pill when the song changes so the enter animation replays.
-  const trackKey = `${track.name}\0${artist}\0${album}\0${art}`;
+  // Name + artist only — don't include art/url or refreshes remount and re-animate.
+  const songId = `${track.name}\0${artist}`;
 
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center p-3 sm:p-4">
       <a
-        key={trackKey}
+        key={songId}
         href={track.url}
         target="_blank"
         rel="noopener noreferrer"
