@@ -14,7 +14,7 @@ import {
   computeListeningDensity,
   type ListeningDensity,
 } from "@/lib/listeningStats";
-import { takeRecentTracksForDisplay, isNowPlayingTrack } from "@/lib/recentTracks";
+import { takeRecentTracksForDisplay } from "@/lib/recentTracks";
 import { GetStaticProps } from "next";
 import Link from "next/link";
 import { useState, useEffect, useRef, useCallback } from "react";
@@ -251,7 +251,7 @@ export default function Home({
           </div>
         }
       >
-        <section className={tracks.some(isNowPlayingTrack) ? "pb-28 sm:pb-32" : undefined}>
+        <section>
           {tracks.length === 0 ? (
             <EmptyState
               title="no recent tracks"

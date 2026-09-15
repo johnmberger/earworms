@@ -95,3 +95,22 @@ export function IconMusic({ className = "w-5 h-5" }: IconProps) {
     </svg>
   );
 }
+
+export function IconMenu({ className = "w-5 h-5" }: IconProps) {
+  return (
+    <svg className={className} {...defaults}>
+      <path d="M4 7h16" />
+      <path d="M4 12h16" />
+      <path d="M4 17h16" />
+    </svg>
+  );
+}
+
+export function IconClose({ className = "w-5 h-5" }: IconProps) {
+  return (
+    <svg className={className} {...defaults}>
+      <path d="M6 6l12 12" />
+      <path d="M18 6 6 18" />
+    </svg>
+  );
+}

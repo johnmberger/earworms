@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ReactNode } from "react";
 import EarwormLogo from "@/components/layout/EarwormLogo";
 import BuiltBy from "@/components/layout/BuiltBy";
+import MobileNav, { type NavItem } from "@/components/layout/MobileNav";
 import {
   IconChevronLeft,
   IconChevronRight,
@@ -9,13 +10,6 @@ import {
 
 const DOT_BG =
   "bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.02%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%221%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]";
-
-type NavItem = {
-  href: string;
-  label: string;
-  /** Arrow before label */
-  back?: boolean;
-};
 
 type PageShellProps = {
   children: ReactNode;
@@ -57,24 +51,29 @@ function Brand({ asLink }: { asLink: boolean }) {
   );
 }
 
-function SiteNav({ items }: { items: NavItem[] }) {
+function NavLink({ item }: { item: NavItem }) {
+  return (
+    <Link
+      href={item.href}
+      className="inline-flex items-center gap-1.5 text-dark-300 hover:text-pink-300 transition-colors group"
+    >
+      {item.back ? (
+        <IconChevronLeft className="w-3.5 h-3.5 transition-transform duration-200 group-hover:-translate-x-0.5" />
+      ) : null}
+      {item.label}
+      {!item.back ? (
+        <IconChevronRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
+      ) : null}
+    </Link>
+  );
+}
+
+function DesktopNav({ items }: { items: NavItem[] }) {
   if (items.length === 0) return null;
   return (
     <nav className="hidden md:flex items-center gap-4 shrink-0 mt-2 lg:mt-3 text-sm">
       {items.map((item) => (
-        <Link
-          key={item.href + item.label}
-          href={item.href}
-          className="inline-flex items-center gap-1.5 text-dark-300 hover:text-pink-300 transition-colors group"
-        >
-          {item.back ? (
-            <IconChevronLeft className="w-3.5 h-3.5 transition-transform duration-200 group-hover:-translate-x-0.5" />
-          ) : null}
-          {item.label}
-          {!item.back ? (
-            <IconChevronRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
-          ) : null}
-        </Link>
+        <NavLink key={item.href + item.label} item={item} />
       ))}
     </nav>
   );
@@ -89,9 +88,10 @@ export default function PageShell({
   width = "narrow",
   showCenterOrb = false,
 }: PageShellProps) {
+  // Wide = home; leave room for the fixed now-playing bar
   const contentWidth =
     width === "wide"
-      ? "container mx-auto px-4 pt-8 pb-16 sm:pt-12 sm:pb-20 lg:pt-16 lg:pb-24"
+      ? "container mx-auto px-4 pt-8 pb-[calc(8.5rem+env(safe-area-inset-bottom))] sm:pt-12 sm:pb-[calc(9.5rem+env(safe-area-inset-bottom))] lg:pt-16"
       : "mx-auto w-full max-w-5xl px-4 sm:px-6 pt-8 pb-16 sm:pt-12 sm:pb-20 lg:pt-14 lg:pb-24";
 
   return (
@@ -112,9 +112,12 @@ export default function PageShell({
       <main className="relative z-10">
         <div className={contentWidth}>
           <header className="mb-10 sm:mb-12">
-            <div className="flex items-start justify-between gap-4 mb-6">
-              <Brand asLink={brandLinksHome} />
-              <SiteNav items={nav} />
+            <div className="flex items-start justify-between gap-3 sm:gap-4 mb-6">
+              <div className="min-w-0">
+                <Brand asLink={brandLinksHome} />
+              </div>
+              <DesktopNav items={nav} />
+              <MobileNav items={nav} />
             </div>
             {header}
           </header>
@@ -141,19 +144,7 @@ export function PageFooterLinks({
     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
       <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
         {links.map((link) => (
-          <Link
-            key={link.href + link.label}
-            href={link.href}
-            className="inline-flex items-center gap-1.5 text-dark-300 hover:text-pink-300 transition-colors group"
-          >
-            {link.back ? (
-              <IconChevronLeft className="w-3.5 h-3.5 transition-transform duration-200 group-hover:-translate-x-0.5" />
-            ) : null}
-            {link.label}
-            {!link.back ? (
-              <IconChevronRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
-            ) : null}
-          </Link>
+          <NavLink key={link.href + link.label} item={link} />
         ))}
       </div>
       <BuiltBy className="sm:justify-end" />
