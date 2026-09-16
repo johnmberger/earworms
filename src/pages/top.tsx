@@ -121,7 +121,7 @@ function TopsBody({ artists, albums, tracks, period, wow }: TopsPageProps) {
             <h2 className="text-sm uppercase tracking-[0.18em] text-dark-400 mb-4 sm:mb-5">
               #1s · {periodTitleSuffix(period)}
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 items-stretch">
+            <div className="flex flex-col gap-1.5 sm:grid sm:grid-cols-3 sm:gap-4 sm:items-stretch">
               {topArtist ? (
                 <SpotlightCard
                   label="#1 artist"

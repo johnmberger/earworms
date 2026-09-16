@@ -71,7 +71,7 @@ function NavLink({ item }: { item: NavItem }) {
 function DesktopNav({ items }: { items: NavItem[] }) {
   if (items.length === 0) return null;
   return (
-    <nav className="hidden md:flex items-center gap-4 shrink-0 mt-2 lg:mt-3 text-sm">
+    <nav className="hidden md:flex items-center gap-4 shrink-0 text-sm">
       {items.map((item) => (
         <NavLink key={item.href + item.label} item={item} />
       ))}
@@ -113,7 +113,7 @@ export default function PageShell({
       <main className="relative z-10">
         <div className={contentWidth}>
           <header className="mb-10 sm:mb-12">
-            <div className="flex items-start justify-between gap-3 sm:gap-4 mb-6 min-h-11">
+            <div className="flex items-center justify-between gap-3 sm:gap-4 mb-6 min-h-11">
               <div className="min-w-0">
                 <Brand asLink={brandLinksHome} />
               </div>

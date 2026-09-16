@@ -14,17 +14,13 @@ import {
   DurationStatsSection,
   LifetimeSection,
 } from "@/components/me/StatsSections";
-import {
-  parsePeriod,
-  durationControlLabel,
-  periodTitleSuffix,
-} from "@/lib/period";
+import { parsePeriod, periodTitleSuffix } from "@/lib/period";
 
-type StatsPageProps = {
+type MePageProps = {
   stats: ListeningStats;
 };
 
-export const getServerSideProps: GetServerSideProps<StatsPageProps> = async (
+export const getServerSideProps: GetServerSideProps<MePageProps> = async (
   context
 ) => {
   context.res.setHeader("Cache-Control", CHART_PAGE_CACHE_CONTROL);
@@ -38,23 +34,34 @@ export const getServerSideProps: GetServerSideProps<StatsPageProps> = async (
       props: {
         stats: {
           profile: null,
-          accountAgeYears: null,
           accountAgeLabel: null,
+          playsPerDay: null,
+          timing: null,
           depth: null,
           overlap: null,
           period,
-          periodLabel: durationControlLabel(period),
         },
       },
     };
   }
 };
 
-function MeBody({ stats }: StatsPageProps) {
-  const { profile, accountAgeLabel, depth, overlap, period } = stats;
+function MeBody({ stats }: MePageProps) {
+  const {
+    profile,
+    accountAgeLabel,
+    playsPerDay,
+    timing,
+    depth,
+    overlap,
+    period,
+  } = stats;
 
   const hasAnything =
-    Boolean(profile) || Boolean(depth) || Boolean(overlap);
+    Boolean(profile) ||
+    Boolean(depth) ||
+    Boolean(overlap) ||
+    Boolean(timing);
 
   const rangeLabel = periodTitleSuffix(period);
   const durationPending = useIsDurationPending();
@@ -75,6 +82,7 @@ function MeBody({ stats }: StatsPageProps) {
               rangeLabel={rangeLabel}
               depth={depth}
               overlap={overlap}
+              timing={timing}
             />
           )}
 
@@ -82,6 +90,7 @@ function MeBody({ stats }: StatsPageProps) {
             <LifetimeSection
               profile={profile}
               accountAgeLabel={accountAgeLabel}
+              playsPerDay={playsPerDay}
             />
           ) : null}
         </div>
@@ -90,14 +99,14 @@ function MeBody({ stats }: StatsPageProps) {
   );
 }
 
-export default function StatsPage({ stats }: StatsPageProps) {
+export default function MePage({ stats }: MePageProps) {
   const { period } = stats;
 
   return (
     <>
       <MetaTags
         title="the numbers"
-        description="in-depth statistics on my listening habits"
+        description="listening depth, timing, and lifetime scrobble stats"
         keywords="earworms, listening stats, scrobbles, music stats"
         path="/me"
       />
@@ -113,7 +122,8 @@ export default function StatsPage({ stats }: StatsPageProps) {
                 the numbers
               </h2>
               <p className="text-dark-400 text-sm sm:text-base mb-4">
-                the top artists stuck in my ears lately
+                how concentrated the listens are, when they happen, and the
+                lifetime tally
               </p>
               <DurationControl />
             </>

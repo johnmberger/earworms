@@ -1,3 +1,5 @@
+import { useLayoutEffect, useRef, useState } from "react";
+
 type IconProps = {
   className?: string;
 };
@@ -66,51 +68,79 @@ export function IconActivity({ className = "w-5 h-5" }: IconProps) {
   );
 }
 
-export function IconUsers({ className = "w-5 h-5" }: IconProps) {
-  return (
-    <svg className={className} {...defaults}>
-      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-      <circle cx="9" cy="7" r="4" />
-      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-    </svg>
-  );
-}
+/** Soundwave bars ↔ X — used by the mobile nav toggle. */
+export function IconMenuToggle({
+  open,
+  className = "w-5 h-5",
+}: IconProps & { open: boolean }) {
+  const rootRef = useRef<HTMLSpanElement>(null);
+  const [morphOpen, setMorphOpen] = useState(open);
+  const [pulsing, setPulsing] = useState(!open);
 
-export function IconDisc({ className = "w-5 h-5" }: IconProps) {
-  return (
-    <svg className={className} {...defaults}>
-      <circle cx="12" cy="12" r="10" />
-      <circle cx="12" cy="12" r="3" />
-    </svg>
-  );
-}
+  useLayoutEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    const inners = Array.from(
+      root.querySelectorAll<HTMLElement>(".menu-toggle-bar-inner")
+    );
 
-export function IconMusic({ className = "w-5 h-5" }: IconProps) {
-  return (
-    <svg className={className} {...defaults}>
-      <path d="M9 18V5l12-2v13" />
-      <circle cx="6" cy="18" r="3" />
-      <circle cx="18" cy="16" r="3" />
-    </svg>
-  );
-}
+    if (open) {
+      // Freeze pulse at the current frame, ease to rest, then rotate into X.
+      setPulsing(false);
+      inners.forEach((el) => {
+        const current = getComputedStyle(el).transform;
+        el.style.animation = "none";
+        el.style.transform = current === "none" ? "scaleY(1)" : current;
+      });
+      void root.offsetWidth;
+      inners.forEach((el) => {
+        el.style.transition = "transform 0.14s ease-out";
+        el.style.transform = "scaleY(1)";
+      });
+      const t = window.setTimeout(() => {
+        inners.forEach((el) => {
+          el.style.transition = "";
+          el.style.transform = "";
+          el.style.animation = "";
+        });
+        setMorphOpen(true);
+      }, 150);
+      return () => window.clearTimeout(t);
+    }
 
-export function IconMenu({ className = "w-5 h-5" }: IconProps) {
-  return (
-    <svg className={className} {...defaults}>
-      <path d="M4 7h16" />
-      <path d="M4 12h16" />
-      <path d="M4 17h16" />
-    </svg>
-  );
-}
+    setMorphOpen(false);
+    inners.forEach((el) => {
+      el.style.animation = "none";
+      el.style.transform = "scaleY(1)";
+    });
+    const t = window.setTimeout(() => {
+      inners.forEach((el) => {
+        el.style.transition = "";
+        el.style.transform = "";
+        el.style.animation = "";
+      });
+      setPulsing(true);
+    }, 460);
+    return () => window.clearTimeout(t);
+  }, [open]);
 
-export function IconClose({ className = "w-5 h-5" }: IconProps) {
   return (
-    <svg className={className} {...defaults}>
-      <path d="M6 6l12 12" />
-      <path d="M18 6 6 18" />
-    </svg>
+    <span
+      ref={rootRef}
+      className={`menu-toggle${morphOpen ? " menu-toggle-open" : ""}${
+        pulsing ? " menu-toggle-pulse" : ""
+      } ${className}`}
+      aria-hidden="true"
+    >
+      <span className="menu-toggle-bar menu-toggle-bar-1">
+        <span className="menu-toggle-bar-inner" />
+      </span>
+      <span className="menu-toggle-bar menu-toggle-bar-2">
+        <span className="menu-toggle-bar-inner" />
+      </span>
+      <span className="menu-toggle-bar menu-toggle-bar-3">
+        <span className="menu-toggle-bar-inner" />
+      </span>
+    </span>
   );
 }

@@ -1,16 +1,11 @@
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
-import {
-  IconChevronLeft,
-  IconChevronRight,
-  IconClose,
-  IconMenu,
-} from "@/components/shared/icons";
+import { IconChevronRight, IconMenuToggle } from "@/components/shared/icons";
 
 export type NavItem = {
   href: string;
   label: string;
-  /** Arrow before label */
+  /** Arrow before label (desktop / footer only) */
   back?: boolean;
 };
 
@@ -59,13 +54,13 @@ export default function MobileNav({ items }: { items: NavItem[] }) {
         aria-haspopup="true"
         aria-label={open ? "close menu" : "open menu"}
         onClick={() => setOpen((value) => !value)}
-        className="inline-flex items-center justify-center min-h-11 min-w-11 -mr-1.5 rounded-xl text-dark-300 hover:text-pink-300 hover:bg-white/5 active:bg-white/10 transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-400/60"
+        className={`inline-flex items-center justify-center min-h-11 min-w-11 -mr-1 rounded-xl border transition-all duration-200 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-400/60 ${
+          open
+            ? "border-pink-400/35 bg-white/10 text-pink-300 shadow-[inset_0_0_0_1px_rgba(244,114,182,0.12)]"
+            : "border-white/15 bg-white/[0.06] text-dark-200 hover:border-pink-400/30 hover:bg-white/10 hover:text-pink-300 active:bg-white/[0.12] active:scale-[0.97]"
+        }`}
       >
-        {open ? (
-          <IconClose className="w-5 h-5" />
-        ) : (
-          <IconMenu className="w-5 h-5" />
-        )}
+        <IconMenuToggle open={open} className="w-5 h-5" />
       </button>
 
       {open ? (
@@ -79,15 +74,10 @@ export default function MobileNav({ items }: { items: NavItem[] }) {
               key={item.href + item.label}
               href={item.href}
               onClick={() => setOpen(false)}
-              className="flex items-center gap-2 min-h-11 px-4 text-base text-dark-200 hover:text-pink-300 hover:bg-white/5 active:bg-white/10 transition-colors touch-manipulation focus-visible:outline-none focus-visible:bg-white/5 focus-visible:text-pink-300"
+              className="group flex items-center gap-2 min-h-11 px-4 text-base text-dark-200 hover:text-pink-300 hover:bg-white/5 active:bg-white/10 transition-colors touch-manipulation focus-visible:outline-none focus-visible:bg-white/5 focus-visible:text-pink-300"
             >
-              {item.back ? (
-                <IconChevronLeft className="w-4 h-4 shrink-0" />
-              ) : null}
               <span className="flex-1">{item.label}</span>
-              {!item.back ? (
-                <IconChevronRight className="w-4 h-4 shrink-0 opacity-70" />
-              ) : null}
+              <IconChevronRight className="w-4 h-4 shrink-0 opacity-70 transition-transform duration-200 group-hover:translate-x-0.5" />
             </Link>
           ))}
         </nav>

@@ -57,6 +57,94 @@
     }
   }
 
+  /* Mobile nav: soundwave bars ↔ X (transform-only — no width/height flip) */
+  .menu-toggle {
+    @apply relative inline-block shrink-0;
+  }
+
+  .menu-toggle-bar {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 2.5px;
+    height: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform-origin: center center;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.3s ease;
+  }
+
+  .menu-toggle-bar-inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 999px;
+    background: currentColor;
+    transform-origin: center center;
+    /* Transitions (not transform pulses) so open/close never snaps mid-cycle */
+    transition:
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.2s ease;
+  }
+
+  .menu-toggle:not(.menu-toggle-open) .menu-toggle-bar-1 {
+    transform: translate(calc(-50% - 5px), -50%);
+  }
+
+  .menu-toggle:not(.menu-toggle-open) .menu-toggle-bar-2 {
+    transform: translate(-50%, -50%);
+  }
+
+  .menu-toggle:not(.menu-toggle-open) .menu-toggle-bar-3 {
+    transform: translate(calc(-50% + 5px), -50%);
+  }
+
+  /* Static resting EQ heights; .menu-toggle-pulse adds the bounce */
+  .menu-toggle:not(.menu-toggle-open) .menu-toggle-bar-1 .menu-toggle-bar-inner {
+    transform: scaleY(0.5);
+  }
+
+  .menu-toggle:not(.menu-toggle-open) .menu-toggle-bar-2 .menu-toggle-bar-inner {
+    transform: scaleY(1);
+  }
+
+  .menu-toggle:not(.menu-toggle-open) .menu-toggle-bar-3 .menu-toggle-bar-inner {
+    transform: scaleY(0.7);
+  }
+
+  .menu-toggle-pulse:not(.menu-toggle-open) .menu-toggle-bar-1 .menu-toggle-bar-inner {
+    animation: menu-eq 1.1s ease-in-out infinite;
+  }
+
+  .menu-toggle-pulse:not(.menu-toggle-open) .menu-toggle-bar-2 .menu-toggle-bar-inner {
+    animation: menu-eq 1.3s ease-in-out infinite;
+    animation-delay: -0.25s;
+  }
+
+  .menu-toggle-pulse:not(.menu-toggle-open) .menu-toggle-bar-3 .menu-toggle-bar-inner {
+    animation: menu-eq 1.15s ease-in-out infinite;
+    animation-delay: -0.5s;
+  }
+
+  .menu-toggle-open .menu-toggle-bar-1 {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  .menu-toggle-open .menu-toggle-bar-2 {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.6);
+  }
+
+  .menu-toggle-open .menu-toggle-bar-3 {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+
+  .menu-toggle-open .menu-toggle-bar-inner {
+    transform: scaleY(1);
+  }
+
   /* Now-playing EQ — one keyframe, staggered children */
   .eq-bars {
     @apply flex items-end gap-0.5 h-4;
@@ -106,6 +194,11 @@
     animation: cover-shimmer 1.4s ease-in-out infinite;
   }
 
+  /* Soft crossfade for chart hover readouts */
+  .animate-fade-soft {
+    animation: fade-soft 300ms ease-out both;
+  }
+
   /* Dense sine samples so the worm motion stays smooth */
   .worm-wave-seg {
     animation: worm-wave 1.6s linear infinite;
@@ -122,12 +215,33 @@
   }
 }
 
+@keyframes menu-eq {
+  0%,
+  100% {
+    transform: scaleY(0.45);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
 @keyframes cover-shimmer {
   0% {
     background-position: 200% 0;
   }
   100% {
     background-position: -200% 0;
+  }
+}
+
+@keyframes fade-soft {
+  from {
+    opacity: 0.35;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -220,9 +334,16 @@
   .animate-float,
   .animate-cover-shimmer,
   .animate-now-playing-in,
+  .animate-fade-soft,
   .worm-wave-seg,
-  .eq-bars > span {
+  .eq-bars > span,
+  .menu-toggle-pulse .menu-toggle-bar-inner {
     animation: none !important;
+  }
+
+  .menu-toggle-bar,
+  .menu-toggle-bar-inner {
+    transition: none !important;
   }
 }
 

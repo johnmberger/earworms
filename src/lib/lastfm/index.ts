@@ -22,14 +22,15 @@ import {
 } from "../schemas";
 import {
   computeDepth,
+  computeListeningTiming,
   computeOverlap,
   formatAccountAge,
+  averagePlaysPerDay,
 } from "../listeningStats";
 import type { ListeningStats } from "../listeningStats";
 import {
   ChartPeriod,
   DEFAULT_CHART_PERIOD,
-  durationControlLabel,
 } from "../period";
 import { asArray, lastfmRequest } from "./request";
 import { pickImageUrl } from "./images";
@@ -479,7 +480,7 @@ export async function getListeningStats(
     `listening-stats:${period}`,
     CHART_CACHE_TTL_SECONDS,
     async () => {
-      const [profile, tops] = await Promise.all([
+      const [profile, tops, recent] = await Promise.all([
         getUserInfo().catch((error) => {
           console.error("User info fetch failed", error);
           return null;
@@ -488,6 +489,10 @@ export async function getListeningStats(
           console.error("Chart tops fetch failed", error);
           return null;
         }),
+        getRecentTracks(200).catch((error) => {
+          console.error("Recent tracks (stats) fetch failed", error);
+          return [] as Track[];
+        }),
       ]);
 
       const age =
@@ -495,14 +500,19 @@ export async function getListeningStats(
           ? formatAccountAge(profile.registeredUnix)
           : null;
 
+      const playsPerDay =
+        profile && profile.registeredUnix > 0
+          ? averagePlaysPerDay(profile.playcount, profile.registeredUnix)
+          : null;
+
       return {
         profile,
-        accountAgeYears: age?.years ?? null,
         accountAgeLabel: age?.label ?? null,
+        playsPerDay,
+        timing: computeListeningTiming(recent),
         depth: tops ? computeDepth(tops.artists) : null,
         overlap: tops ? computeOverlap(tops) : null,
         period,
-        periodLabel: durationControlLabel(period),
       };
     }
   );

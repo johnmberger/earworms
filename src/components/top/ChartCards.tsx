@@ -4,8 +4,9 @@ import {
   sizedLastfmImage,
 } from "@/lib/lastfm/images";
 import { formatNumber } from "@/lib/dateUtils";
+import { IconExternalLink } from "@/components/shared/icons";
 
-export function ShareBar({
+function ShareBar({
   value,
   max,
   className = "",
@@ -48,58 +49,91 @@ export function SpotlightCard({
   const hasArt = Boolean(image) && !image.includes(LASTFM_IMAGE_PLACEHOLDER);
   const blurUrl = hasArt ? sizedLastfmImage(image, "thumb") : "";
   const coverUrl = hasArt ? sizedLastfmImage(image, "tile") : "";
+  const thumbUrl = hasArt ? sizedLastfmImage(image, "thumb") : "";
+  const playsLabel = `${formatNumber(plays)} ${plays === 1 ? "play" : "plays"}`;
 
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group panel relative overflow-hidden hover:bg-white/[0.07] transition-all duration-300 px-3 py-4 sm:px-4 sm:py-5 h-full flex flex-col items-center text-center"
-    >
-      <div
-        className="absolute inset-0 opacity-40 pointer-events-none scale-110 blur-2xl"
-        aria-hidden="true"
-        style={
-          blurUrl
-            ? {
-                backgroundImage: `url(${blurUrl})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }
-            : undefined
-        }
+    <>
+      {/* Dense list row — mobile only */}
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="sm:hidden flex items-center gap-3 min-h-[64px] rounded-xl border border-white/10 bg-white/[0.04] px-2.5 py-2 active:bg-white/[0.07] transition-colors"
       >
-        {!blurUrl ? (
-          <div className="w-full h-full bg-gradient-to-br from-pink-500/30 via-purple-500/20 to-blue-500/30" />
-        ) : null}
-      </div>
-      <div className="relative flex flex-col items-center w-full min-w-0 flex-1">
         <CoverImage
           name={title}
-          image={coverUrl}
-          className="w-40 h-40 sm:w-44 sm:h-44 text-4xl shadow-lg shadow-black/40"
-          rounded="rounded-xl"
+          image={thumbUrl}
+          className="w-14 h-14 shrink-0 text-lg shadow-md shadow-black/30"
+          rounded="rounded-lg"
           priority={priority}
         />
-        <p className="text-[10px] uppercase tracking-[0.2em] text-pink-300/80 mt-3 mb-1">
-          {label}
-        </p>
-        <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-pink-200 transition-colors leading-snug line-clamp-2 min-h-[2.75rem] sm:min-h-[3.25rem] w-full">
-          {title}
-        </h3>
-        <p className="text-xs text-dark-300 mt-1 line-clamp-1 min-h-[1rem] w-full">
-          {subtitle || "\u00A0"}
-        </p>
-        <div className="mt-auto pt-3 w-full">
-          <p className="text-xs text-dark-400 tabular-nums">
-            {formatNumber(plays)} {plays === 1 ? "play" : "plays"}
+        <div className="min-w-0 flex-1">
+          <p className="text-[10px] uppercase tracking-[0.16em] text-pink-300/80 truncate">
+            {label}
           </p>
-          <p className="text-[11px] text-pink-300/70 mt-1.5 tabular-nums min-h-[1.125rem]">
-            {nudge || "\u00A0"}
+          <p className="font-semibold text-white text-sm leading-snug truncate mt-0.5">
+            {title}
+          </p>
+          <p className="text-xs text-dark-300 truncate mt-0.5">
+            {subtitle ? `${subtitle} · ${playsLabel}` : playsLabel}
+            {nudge ? ` · ${nudge}` : ""}
           </p>
         </div>
-      </div>
-    </a>
+        <IconExternalLink className="w-3.5 h-3.5 text-dark-500 shrink-0" />
+        <span className="sr-only">Open on Last.fm</span>
+      </a>
+
+      {/* Spotlight card — sm and up */}
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group panel relative overflow-hidden hover:bg-white/[0.07] transition-all duration-300 px-3 py-4 sm:px-4 sm:py-5 h-full hidden sm:flex flex-col items-center text-center"
+      >
+        <div
+          className="absolute inset-0 opacity-40 pointer-events-none scale-110 blur-2xl"
+          aria-hidden="true"
+          style={
+            blurUrl
+              ? {
+                  backgroundImage: `url(${blurUrl})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }
+              : undefined
+          }
+        >
+          {!blurUrl ? (
+            <div className="w-full h-full bg-gradient-to-br from-pink-500/30 via-purple-500/20 to-blue-500/30" />
+          ) : null}
+        </div>
+        <div className="relative flex flex-col items-center w-full min-w-0 flex-1">
+          <CoverImage
+            name={title}
+            image={coverUrl}
+            className="w-40 h-40 sm:w-44 sm:h-44 text-4xl shadow-lg shadow-black/40"
+            rounded="rounded-xl"
+            priority={priority}
+          />
+          <p className="text-[10px] uppercase tracking-[0.2em] text-pink-300/80 mt-3 mb-1">
+            {label}
+          </p>
+          <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-pink-200 transition-colors leading-snug line-clamp-2 min-h-[2.75rem] sm:min-h-[3.25rem] w-full">
+            {title}
+          </h3>
+          <p className="text-xs text-dark-300 mt-1 line-clamp-1 min-h-[1rem] w-full">
+            {subtitle || "\u00A0"}
+          </p>
+          <div className="mt-auto pt-3 w-full">
+            <p className="text-xs text-dark-400 tabular-nums">{playsLabel}</p>
+            <p className="text-[11px] text-pink-300/70 mt-1.5 tabular-nums min-h-[1.125rem]">
+              {nudge || "\u00A0"}
+            </p>
+          </div>
+        </div>
+      </a>
+    </>
   );
 }
 

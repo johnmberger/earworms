@@ -41,14 +41,25 @@ export type ListeningDensity = {
   samplePlays: number;
 };
 
+/** Hour-of-day listening shape from a recent scrobble sample (local time). */
+export type ListeningTiming = {
+  /** plays per hour, length 24 */
+  hours: number[];
+  peakHour: number;
+  peakHourLabel: string;
+  peakSharePercent: number;
+  samplePlays: number;
+};
+
 export type ListeningStats = {
   profile: UserInfo | null;
-  accountAgeYears: number | null;
   accountAgeLabel: string | null;
+  /** lifetime scrobbles / days since registered */
+  playsPerDay: number | null;
+  timing: ListeningTiming | null;
   depth: ChartDepth | null;
   overlap: ChartOverlap | null;
   period: ChartPeriod;
-  periodLabel: string;
 };
 
 function startOfLocalDay(d: Date): number {
@@ -59,7 +70,7 @@ function startOfLocalDay(d: Date): number {
 
 export function computeDepth(
   artists: { name: string; playcount: string }[],
-  leaderCount = 5
+  leaderCount = 7
 ): ChartDepth | null {
   if (!artists.length) return null;
   const plays = artists.map((a) => parseInt(a.playcount, 10) || 0);
@@ -87,18 +98,6 @@ export function computeDepth(
     leadersSharePercent:
       totalPlays > 0 ? Math.round((leadersPlays / totalPlays) * 100) : 0,
   };
-}
-
-/** Vibe from chart concentration — share of plays, not raw plays/artist. */
-export function depthVibe(depth: ChartDepth): string {
-  const topShare = depth.leaders[0]?.sharePercent ?? 0;
-  const top5 = depth.leadersSharePercent;
-
-  // ~20%+ on one artist is already heavy rotation
-  if (topShare >= 20 || top5 >= 70) return "deep in the loop";
-  if (topShare >= 12 || top5 >= 50) return "a healthy amount of repeat";
-  if (topShare >= 7 || top5 >= 35) return "mixing it up";
-  return "lots of variety";
 }
 
 export function computeOverlap(
@@ -231,6 +230,63 @@ export function computeListeningDensity(
     sampleDays,
     samplePlays,
   };
+}
+
+/** 12-hour clock label, e.g. 0 → "12am", 13 → "1pm" */
+export function formatHourLabel(hour: number): string {
+  const h = ((Math.floor(hour) % 24) + 24) % 24;
+  const suffix = h < 12 ? "am" : "pm";
+  const h12 = h % 12 || 12;
+  return `${h12}${suffix}`;
+}
+
+/**
+ * Local-hour listening distribution from recent scrobbles.
+ * Useful for “when do I listen?” without a full history dump.
+ */
+export function computeListeningTiming(
+  tracks: Track[]
+): ListeningTiming | null {
+  const hours = Array.from({ length: 24 }, () => 0);
+  let samplePlays = 0;
+
+  for (const track of tracks) {
+    const uts = track.date?.uts;
+    if (!uts) continue;
+    const ms = parseInt(uts, 10) * 1000;
+    if (!Number.isFinite(ms)) continue;
+    hours[new Date(ms).getHours()] += 1;
+    samplePlays += 1;
+  }
+
+  if (samplePlays === 0) return null;
+
+  let peakHour = 0;
+  for (let h = 1; h < 24; h += 1) {
+    if (hours[h]! > hours[peakHour]!) peakHour = h;
+  }
+
+  return {
+    hours,
+    peakHour,
+    peakHourLabel: formatHourLabel(peakHour),
+    peakSharePercent: Math.round((hours[peakHour]! / samplePlays) * 100),
+    samplePlays,
+  };
+}
+
+/** Lifetime average scrobbles per day since registration. */
+export function averagePlaysPerDay(
+  playcount: number,
+  registeredUnix: number,
+  now = new Date()
+): number | null {
+  if (playcount < 1 || registeredUnix < 1) return null;
+  const days = Math.max(
+    1,
+    (now.getTime() - registeredUnix * 1000) / (24 * 60 * 60 * 1000)
+  );
+  return Math.round((playcount / days) * 10) / 10;
 }
 
 export function formatAccountAge(registeredUnix: number, now = new Date()): {

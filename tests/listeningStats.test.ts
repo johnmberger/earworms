@@ -1,24 +1,26 @@
 import { describe, expect, it } from "vitest";
 import {
+  averagePlaysPerDay,
   computeDepth,
   computeListeningDensity,
+  computeListeningTiming,
   computeOverlap,
-  depthVibe,
   formatAccountAge,
-  type ChartDepth,
+  formatHourLabel,
 } from "@/lib/listeningStats";
 import type { ChartTops } from "@/lib/schemas";
 import type { Track } from "@/lib/schemas";
 
-function depthFixture(
-  partial: Partial<ChartDepth> & Pick<ChartDepth, "leaders" | "leadersSharePercent">
-): ChartDepth {
+function trackAt(iso: string, name = "song"): Track {
+  const uts = String(Math.floor(new Date(iso).getTime() / 1000));
   return {
-    uniqueArtists: 10,
-    totalPlays: 100,
-    playsPerArtist: 10,
-    ...partial,
-  };
+    name,
+    artist: { "#text": "Artist", mbid: "" },
+    album: { "#text": "Album", mbid: "" },
+    image: [],
+    url: "https://example.com",
+    date: { uts, "#text": iso },
+  } as Track;
 }
 
 describe("computeDepth", () => {
@@ -52,55 +54,8 @@ describe("computeDepth", () => {
   });
 });
 
-describe("depthVibe", () => {
-  it("flags ~20% top-artist share as deep in the loop", () => {
-    expect(
-      depthVibe(
-        depthFixture({
-          leaders: [{ name: "A", plays: 20, sharePercent: 20 }],
-          leadersSharePercent: 45,
-        })
-      )
-    ).toBe("deep in the loop");
-  });
-
-  it("uses mid-band copy for moderate concentration", () => {
-    expect(
-      depthVibe(
-        depthFixture({
-          leaders: [{ name: "A", plays: 14, sharePercent: 14 }],
-          leadersSharePercent: 40,
-        })
-      )
-    ).toBe("a healthy amount of repeat");
-  });
-
-  it("calls a varied chart lots of variety", () => {
-    expect(
-      depthVibe(
-        depthFixture({
-          leaders: [{ name: "A", plays: 5, sharePercent: 5 }],
-          leadersSharePercent: 20,
-        })
-      )
-    ).toBe("lots of variety");
-  });
-});
-
 describe("computeListeningDensity", () => {
   const now = new Date("2026-08-15T15:00:00");
-
-  function trackAt(iso: string, name = "song"): Track {
-    const uts = String(Math.floor(new Date(iso).getTime() / 1000));
-    return {
-      name,
-      artist: { "#text": "Artist", mbid: "" },
-      album: { "#text": "Album", mbid: "" },
-      image: [],
-      url: "https://example.com",
-      date: { uts, "#text": iso },
-    } as Track;
-  }
 
   it("ignores now-playing rows without timestamps", () => {
     const np = {
@@ -132,6 +87,50 @@ describe("computeListeningDensity", () => {
       sampleDays: 3,
       recentDailyAvg: 1.3,
     });
+  });
+});
+
+describe("computeListeningTiming", () => {
+  it("returns null with no stamped plays", () => {
+    expect(computeListeningTiming([])).toBeNull();
+  });
+
+  it("finds the peak local hour and share", () => {
+    const timing = computeListeningTiming([
+      trackAt("2026-08-15T14:10:00"),
+      trackAt("2026-08-15T14:40:00"),
+      trackAt("2026-08-15T14:55:00"),
+      trackAt("2026-08-15T09:00:00"),
+    ]);
+
+    expect(timing?.peakHour).toBe(14);
+    expect(timing?.peakHourLabel).toBe("2pm");
+    expect(timing?.peakSharePercent).toBe(75);
+    expect(timing?.samplePlays).toBe(4);
+    expect(timing?.hours[14]).toBe(3);
+    expect(timing?.hours[9]).toBe(1);
+  });
+});
+
+describe("formatHourLabel", () => {
+  it("formats 12-hour labels", () => {
+    expect(formatHourLabel(0)).toBe("12am");
+    expect(formatHourLabel(13)).toBe("1pm");
+    expect(formatHourLabel(12)).toBe("12pm");
+  });
+});
+
+describe("averagePlaysPerDay", () => {
+  it("returns null for empty playcounts", () => {
+    expect(averagePlaysPerDay(0, 1_000_000)).toBeNull();
+  });
+
+  it("divides lifetime plays by days since registration", () => {
+    const now = new Date("2026-08-15T00:00:00Z");
+    const registered = Math.floor(
+      new Date("2026-08-05T00:00:00Z").getTime() / 1000
+    );
+    expect(averagePlaysPerDay(100, registered, now)).toBe(10);
   });
 });
 
