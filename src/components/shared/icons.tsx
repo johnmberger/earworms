@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef } from "react";
 
 type IconProps = {
   className?: string;
@@ -74,19 +74,28 @@ export function IconMenuToggle({
   className = "w-5 h-5",
 }: IconProps & { open: boolean }) {
   const rootRef = useRef<HTMLSpanElement>(null);
-  const [morphOpen, setMorphOpen] = useState(open);
-  const [pulsing, setPulsing] = useState(!open);
+  const readyRef = useRef(false);
 
+  // Drive open/pulse classes on the DOM so we can freeze the pulse mid-frame
+  // without React setState-in-effect cascading renders.
   useLayoutEffect(() => {
     const root = rootRef.current;
     if (!root) return;
+
     const inners = Array.from(
       root.querySelectorAll<HTMLElement>(".menu-toggle-bar-inner")
     );
+    const clearInline = () => {
+      inners.forEach((el) => {
+        el.style.transition = "";
+        el.style.transform = "";
+        el.style.animation = "";
+      });
+    };
 
     if (open) {
+      root.classList.remove("menu-toggle-pulse");
       // Freeze pulse at the current frame, ease to rest, then rotate into X.
-      setPulsing(false);
       inners.forEach((el) => {
         const current = getComputedStyle(el).transform;
         el.style.animation = "none";
@@ -98,28 +107,29 @@ export function IconMenuToggle({
         el.style.transform = "scaleY(1)";
       });
       const t = window.setTimeout(() => {
-        inners.forEach((el) => {
-          el.style.transition = "";
-          el.style.transform = "";
-          el.style.animation = "";
-        });
-        setMorphOpen(true);
+        clearInline();
+        root.classList.add("menu-toggle-open");
       }, 150);
       return () => window.clearTimeout(t);
     }
 
-    setMorphOpen(false);
+    root.classList.remove("menu-toggle-open");
+
+    // First paint: start pulsing immediately. Later closes: wait for morph-out.
+    if (!readyRef.current) {
+      readyRef.current = true;
+      clearInline();
+      root.classList.add("menu-toggle-pulse");
+      return;
+    }
+
     inners.forEach((el) => {
       el.style.animation = "none";
       el.style.transform = "scaleY(1)";
     });
     const t = window.setTimeout(() => {
-      inners.forEach((el) => {
-        el.style.transition = "";
-        el.style.transform = "";
-        el.style.animation = "";
-      });
-      setPulsing(true);
+      clearInline();
+      root.classList.add("menu-toggle-pulse");
     }, 460);
     return () => window.clearTimeout(t);
   }, [open]);
@@ -127,9 +137,7 @@ export function IconMenuToggle({
   return (
     <span
       ref={rootRef}
-      className={`menu-toggle${morphOpen ? " menu-toggle-open" : ""}${
-        pulsing ? " menu-toggle-pulse" : ""
-      } ${className}`}
+      className={`menu-toggle menu-toggle-pulse ${className}`}
       aria-hidden="true"
     >
       <span className="menu-toggle-bar menu-toggle-bar-1">
