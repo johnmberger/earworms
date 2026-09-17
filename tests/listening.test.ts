@@ -4,12 +4,24 @@ import {
   computeDepth,
   computeListeningDensity,
   computeListeningTiming,
+  getEasternHour,
   computeOverlap,
   formatAccountAge,
   formatHourLabel,
-} from "@/lib/listeningStats";
+} from "@/lib/listening";
 import type { ChartTops } from "@/lib/schemas";
 import type { Track } from "@/lib/schemas";
+
+function trackAtUnix(uts: number, name = "song"): Track {
+  return {
+    name,
+    artist: { "#text": "Artist", mbid: "" },
+    album: { "#text": "Album", mbid: "" },
+    image: [],
+    url: "https://example.com",
+    date: { uts: String(uts), "#text": "" },
+  } as Track;
+}
 
 function trackAt(iso: string, name = "song"): Track {
   const uts = String(Math.floor(new Date(iso).getTime() / 1000));
@@ -90,25 +102,34 @@ describe("computeListeningDensity", () => {
   });
 });
 
+describe("getEasternHour", () => {
+  it("maps UTC instants into America/New_York wall time", () => {
+    // 2026-08-15 is EDT (UTC−4)
+    expect(getEasternHour(Date.UTC(2026, 7, 15, 14, 0))).toBe(10);
+    expect(getEasternHour(Date.UTC(2026, 7, 15, 4, 0))).toBe(0);
+  });
+});
+
 describe("computeListeningTiming", () => {
   it("returns null with no stamped plays", () => {
     expect(computeListeningTiming([])).toBeNull();
   });
 
-  it("finds the peak local hour and share", () => {
+  it("buckets scrobbles into Eastern Time hours", () => {
+    // 14:10/14:40/14:55 and 09:00 UTC → 10am and 5am ET in August
     const timing = computeListeningTiming([
-      trackAt("2026-08-15T14:10:00"),
-      trackAt("2026-08-15T14:40:00"),
-      trackAt("2026-08-15T14:55:00"),
-      trackAt("2026-08-15T09:00:00"),
+      trackAtUnix(Date.UTC(2026, 7, 15, 14, 10) / 1000),
+      trackAtUnix(Date.UTC(2026, 7, 15, 14, 40) / 1000),
+      trackAtUnix(Date.UTC(2026, 7, 15, 14, 55) / 1000),
+      trackAtUnix(Date.UTC(2026, 7, 15, 9, 0) / 1000),
     ]);
 
-    expect(timing?.peakHour).toBe(14);
-    expect(timing?.peakHourLabel).toBe("2pm");
+    expect(timing?.peakHour).toBe(10);
+    expect(timing?.peakHourLabel).toBe("10am");
     expect(timing?.peakSharePercent).toBe(75);
     expect(timing?.samplePlays).toBe(4);
-    expect(timing?.hours[14]).toBe(3);
-    expect(timing?.hours[9]).toBe(1);
+    expect(timing?.hours[10]).toBe(3);
+    expect(timing?.hours[5]).toBe(1);
   });
 });
 

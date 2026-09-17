@@ -5,7 +5,7 @@ import {
   type ChartDepth,
   type ChartOverlap,
   type ListeningTiming,
-} from "@/lib/listeningStats";
+} from "@/lib/listening";
 import type { UserInfo } from "@/lib/schemas";
 import { StatCard } from "@/components/shared/StatCard";
 
@@ -364,7 +364,7 @@ function WhenPanel({ timing }: { timing: ListeningTiming }) {
         className="text-xs text-dark-400 mb-4 min-h-[1.25rem] animate-fade-soft"
       >
         {isPeakDefault ? (
-          <>busiest hour · {timing.peakSharePercent}% of recent plays</>
+          <>busiest hour (ET) · {timing.peakSharePercent}% of recent plays</>
         ) : (
           <>
             {formatNumber(activeCount)}{" "}
@@ -375,7 +375,7 @@ function WhenPanel({ timing }: { timing: ListeningTiming }) {
       <div
         className="flex items-end gap-px h-20"
         role="img"
-        aria-label="plays by hour of day"
+        aria-label="plays by hour of day in Eastern Time"
       >
         {timing.hours.map((count, hour) => {
           const height = Math.max(8, Math.round((count / maxHour) * 100));
@@ -403,7 +403,7 @@ function WhenPanel({ timing }: { timing: ListeningTiming }) {
               onMouseLeave={() => setHoverHour(null)}
               onFocus={() => setHoverHour(hour)}
               onBlur={() => setHoverHour(null)}
-              aria-label={`${formatHourLabel(hour)} · ${count} ${
+              aria-label={`${formatHourLabel(hour)} ET · ${count} ${
                 count === 1 ? "play" : "plays"
               }`}
             />
@@ -411,7 +411,7 @@ function WhenPanel({ timing }: { timing: ListeningTiming }) {
         })}
       </div>
       <div className="flex justify-between text-[10px] text-dark-500 mt-2 tabular-nums">
-        <span>12am</span>
+        <span>12am ET</span>
         <span>12pm</span>
         <span>11pm</span>
       </div>

@@ -1,5 +1,5 @@
 import { formatNumber } from "@/lib/dateUtils";
-import type { ListeningDensity } from "@/lib/listeningStats";
+import type { ListeningDensity } from "@/lib/listening";
 import { StatCard } from "@/components/shared/StatCard";
 
 function densityDelta(today: number, yesterday: number): string {

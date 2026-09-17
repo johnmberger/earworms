@@ -20,7 +20,7 @@ import MetaTags from "@/components/layout/MetaTags";
 import PageShell, { PageFooterLinks } from "@/components/layout/PageShell";
 import { TopPeriodSkeleton } from "@/components/top/TopPeriodSkeleton";
 import { RankRow, SpotlightCard } from "@/components/top/ChartCards";
-import { getArtistChartStats } from "@/lib/dateUtils";
+import { getArtistChartStats } from "@/lib/chartStats";
 import { sizedLastfmImage } from "@/lib/lastfm/images";
 import {
   ChartPeriod,

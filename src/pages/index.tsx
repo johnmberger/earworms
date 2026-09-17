@@ -13,7 +13,7 @@ import { getRecentTracks, Track } from "@/lib/lastfm";
 import {
   computeListeningDensity,
   type ListeningDensity,
-} from "@/lib/listeningStats";
+} from "@/lib/listening";
 import { takeRecentTracksForDisplay } from "@/lib/recentTracks";
 import { GetStaticProps } from "next";
 import Link from "next/link";

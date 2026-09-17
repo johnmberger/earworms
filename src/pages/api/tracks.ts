@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getRecentTracks } from "@/lib/lastfm";
-import { computeListeningDensity } from "@/lib/listeningStats";
+import { computeListeningDensity } from "@/lib/listening";
 import { takeRecentTracksForDisplay } from "@/lib/recentTracks";
 import { logApiError } from "@/lib/apiError";
 
