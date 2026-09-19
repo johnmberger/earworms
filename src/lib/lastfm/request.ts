@@ -43,11 +43,12 @@ export async function lastfmRequest<T>({
 
   const url = `${API_URL}?${searchParams.toString()}`;
 
-  const response = await fetch(url, {
-    next: {
-      revalidate,
-    },
-  });
+  const response = await fetch(
+    url,
+    revalidate === 0
+      ? { cache: "no-store" }
+      : { next: { revalidate } }
+  );
 
   if (!response.ok) {
     const responseText = await response

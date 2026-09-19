@@ -146,8 +146,14 @@ export default function Home({
       if (document.visibilityState === "hidden") return;
       void refresh({ silent: true });
     };
+    // ISR HTML can be stale — pull fresh tracks on load and when returning to the tab
+    tick();
     const interval = setInterval(tick, 30000);
-    return () => clearInterval(interval);
+    document.addEventListener("visibilitychange", tick);
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener("visibilitychange", tick);
+    };
   }, [refresh]);
 
   return (

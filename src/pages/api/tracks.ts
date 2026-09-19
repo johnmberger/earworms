@@ -15,7 +15,7 @@ export default async function handler(
   }
 
   try {
-    const recent = await getRecentTracks(SAMPLE_LIMIT);
+    const recent = await getRecentTracks(SAMPLE_LIMIT, { revalidate: 0 });
     res.status(200).json({
       tracks: takeRecentTracksForDisplay(recent),
       density: computeListeningDensity(recent),
