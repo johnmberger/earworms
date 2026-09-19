@@ -85,3 +85,16 @@ export const PERIOD_OPTIONS: {
   label: durationControlLabel(value),
   shortLabel: durationControlShortLabel(value),
 }));
+
+/**
+ * Canonical / OG path for a period page.
+ * Default period omits the query so `/top` and `/top?period=7day` share one URL.
+ */
+export function periodSharePath(
+  pathname: string,
+  period: ChartPeriod
+): string {
+  const base = pathname.startsWith("/") ? pathname : `/${pathname}`;
+  if (period === DEFAULT_CHART_PERIOD) return base;
+  return `${base}?period=${period}`;
+}

@@ -26,6 +26,7 @@ import {
   ChartPeriod,
   parsePeriod,
   durationControlLabel,
+  periodSharePath,
   periodTitleSuffix,
 } from "@/lib/period";
 
@@ -283,7 +284,7 @@ export default function TopsPage(props: TopsPageProps) {
         title={pageTitle}
         description={`top artists, albums, and tracks — currently showing ${periodLabel}.`}
         keywords="earworms, top charts, top artists, top albums, top tracks, music"
-        path="/top"
+        path={periodSharePath("/top", props.period)}
       />
       <DurationPendingProvider period={props.period} pathname="/top">
         <PageShell

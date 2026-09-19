@@ -14,7 +14,11 @@ import {
   DurationStatsSection,
   LifetimeSection,
 } from "@/components/me/StatsSections";
-import { parsePeriod, periodTitleSuffix } from "@/lib/period";
+import {
+  parsePeriod,
+  periodSharePath,
+  periodTitleSuffix,
+} from "@/lib/period";
 
 type MePageProps = {
   stats: ListeningStats;
@@ -106,9 +110,9 @@ export default function MePage({ stats }: MePageProps) {
     <>
       <MetaTags
         title="the numbers"
-        description="listening depth, timing, and lifetime scrobble stats"
+        description={`listening depth, timing, and lifetime scrobble stats — ${periodTitleSuffix(period)}.`}
         keywords="earworms, listening stats, scrobbles, music stats"
-        path="/me"
+        path={periodSharePath("/me", period)}
       />
       <DurationPendingProvider period={period} pathname="/me">
         <PageShell

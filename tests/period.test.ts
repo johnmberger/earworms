@@ -3,6 +3,7 @@ import {
   DEFAULT_CHART_PERIOD,
   isChartPeriod,
   parsePeriod,
+  periodSharePath,
   periodTitleSuffix,
 } from "@/lib/period";
 
@@ -35,5 +36,17 @@ describe("periodTitleSuffix", () => {
   it("returns casual copy for each period", () => {
     expect(periodTitleSuffix("7day")).toBe("this week");
     expect(periodTitleSuffix("overall")).toBe("all time");
+  });
+});
+
+describe("periodSharePath", () => {
+  it("omits the query for the default period", () => {
+    expect(periodSharePath("/top", "7day")).toBe("/top");
+    expect(periodSharePath("/me", DEFAULT_CHART_PERIOD)).toBe("/me");
+  });
+
+  it("includes ?period= for other ranges", () => {
+    expect(periodSharePath("/top", "1month")).toBe("/top?period=1month");
+    expect(periodSharePath("me", "overall")).toBe("/me?period=overall");
   });
 });
