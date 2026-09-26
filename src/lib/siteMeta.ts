@@ -14,6 +14,8 @@ export const DEFAULT_META = {
   title: SITE_NAME,
   description:
     "the songs that get stuck in my head. see what's currently spinning, what i've been obsessing over, and discover my musical guilty pleasures in real-time.",
+  /** Short line for Slack / iMessage / social previews */
+  ogDescription: "the songs that get stuck in my head",
   keywords:
     "earworms, music, listening history, music discovery, recently played, music obsession, guilty pleasures, music taste",
   image: `${SITE_URL}${OG_IMAGE_PATH}`,

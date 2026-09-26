@@ -159,7 +159,8 @@ export default function Home({
   return (
     <>
       <MetaTags
-        description="the songs that get stuck in my head. see what's currently spinning, what i've been obsessing over, and catch my musical guilty pleasures. live updates every 30 seconds."
+        description="the songs that get stuck in my head"
+        ogDescription="the songs that get stuck in my head"
         keywords="earworms, recently played, live music, current song, music obsession, guilty pleasures, music taste"
         path="/"
       />

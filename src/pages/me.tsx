@@ -110,7 +110,8 @@ export default function MePage({ stats }: MePageProps) {
     <>
       <MetaTags
         title="the numbers"
-        description={`listening depth, timing, and lifetime scrobble stats — ${periodTitleSuffix(period)}.`}
+        description="listening depth, timing, and lifetime scrobble stats"
+        ogDescription="my lifetime listening stats"
         keywords="earworms, listening stats, scrobbles, music stats"
         path={periodSharePath("/me", period)}
       />

@@ -25,7 +25,6 @@ import { sizedLastfmImage } from "@/lib/lastfm/images";
 import {
   ChartPeriod,
   parsePeriod,
-  durationControlLabel,
   periodSharePath,
   periodTitleSuffix,
 } from "@/lib/period";
@@ -276,13 +275,13 @@ function TopsBody({ artists, albums, tracks, period, wow }: TopsPageProps) {
 
 export default function TopsPage(props: TopsPageProps) {
   const pageTitle = "number ones · my top artists, albums, and tracks";
-  const periodLabel = durationControlLabel(props.period);
 
   return (
     <>
       <MetaTags
         title={pageTitle}
-        description={`top artists, albums, and tracks — currently showing ${periodLabel}.`}
+        description="top artists, albums, and tracks"
+        ogDescription="my top charts · artists, albums, and tracks"
         keywords="earworms, top charts, top artists, top albums, top tracks, music"
         path={periodSharePath("/top", props.period)}
       />

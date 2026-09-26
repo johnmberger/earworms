@@ -9,6 +9,8 @@ import {
 export type MetaTagsProps = {
   title?: string;
   description?: string;
+  /** Brief share-card blurb; falls back to description, then site default */
+  ogDescription?: string;
   keywords?: string;
   /** Path or absolute URL (defaults to site root) */
   path?: string;
@@ -20,6 +22,7 @@ export type MetaTagsProps = {
 export default function MetaTags({
   title,
   description,
+  ogDescription,
   keywords,
   path,
   ogImage,
@@ -28,6 +31,8 @@ export default function MetaTags({
 }: MetaTagsProps) {
   const finalTitle = title ? `${title} | ${SITE_NAME}` : DEFAULT_META.title;
   const finalDescription = description || DEFAULT_META.description;
+  const finalOgDescription =
+    ogDescription || description || DEFAULT_META.ogDescription;
   const finalKeywords = keywords || DEFAULT_META.keywords;
   const finalUrl = toAbsoluteUrl(path);
   const finalImage = resolveOgImage(ogImage);
@@ -47,7 +52,7 @@ export default function MetaTags({
       <meta property="og:type" content="website" />
       <meta property="og:site_name" content={SITE_NAME} />
       <meta property="og:title" content={finalTitle} />
-      <meta property="og:description" content={finalDescription} />
+      <meta property="og:description" content={finalOgDescription} />
       <meta property="og:image" content={finalImage} />
       <meta property="og:image:type" content="image/png" />
       <meta property="og:image:width" content={DEFAULT_META.imageWidth} />
@@ -57,7 +62,7 @@ export default function MetaTags({
 
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={finalTitle} />
-      <meta name="twitter:description" content={finalDescription} />
+      <meta name="twitter:description" content={finalOgDescription} />
       <meta name="twitter:image" content={finalImage} />
       <meta name="twitter:image:alt" content={finalImageAlt} />
     </Head>

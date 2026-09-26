@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Inter } from "next/font/google";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -92,6 +93,7 @@ export default function App({ Component, pageProps }: AppProps) {
       {splash === "show" ? <LoadingScreen isLoading /> : null}
       <Component {...pageProps} />
       <Analytics />
+      <SpeedInsights />
     </div>
   );
 }
