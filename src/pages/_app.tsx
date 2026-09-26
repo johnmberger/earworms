@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
+import { Analytics } from "@vercel/analytics/next";
 import { Inter } from "next/font/google";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -90,6 +91,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <div className={`${inter.variable} font-sans`}>
       {splash === "show" ? <LoadingScreen isLoading /> : null}
       <Component {...pageProps} />
+      <Analytics />
     </div>
   );
 }
