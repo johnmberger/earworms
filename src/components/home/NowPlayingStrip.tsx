@@ -11,7 +11,7 @@ export default function NowPlayingStrip({ track }: { track: Track }) {
   const songId = `${track.name}\0${artist}`;
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center p-3 sm:p-4">
+    <div className="pointer-events-none fixed inset-x-0 z-40 flex justify-center px-4 bottom-[max(2.75rem,calc(env(safe-area-inset-bottom)+1.25rem))] sm:bottom-4 sm:px-4">
       <a
         key={songId}
         href={track.url}

@@ -92,7 +92,7 @@ export default function PageShell({
   // `wide` (home) only adds clearance for the fixed now-playing bar.
   const contentWidth =
     width === "wide"
-      ? "mx-auto w-full max-w-6xl px-4 sm:px-6 pt-8 sm:pt-12 lg:pt-14 pb-[calc(8.5rem+env(safe-area-inset-bottom))] sm:pb-[calc(9.5rem+env(safe-area-inset-bottom))]"
+      ? "mx-auto w-full max-w-6xl px-4 sm:px-6 pt-8 sm:pt-12 lg:pt-14 pb-[calc(10.5rem+env(safe-area-inset-bottom))] sm:pb-[calc(9.5rem+env(safe-area-inset-bottom))]"
       : "mx-auto w-full max-w-6xl px-4 sm:px-6 pt-8 pb-16 sm:pt-12 sm:pb-20 lg:pt-14 lg:pb-24";
 
   return (
