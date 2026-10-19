@@ -19,7 +19,7 @@ function ShareBar({
   return (
     <div className={`h-1.5 rounded-full bg-white/5 overflow-hidden ${className}`}>
       <div
-        className="h-full rounded-full bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400"
+        className="h-full rounded-full bg-linear-to-r from-pink-400 via-purple-400 to-blue-400"
         style={{ width: `${width}%` }}
       />
     </div>
@@ -59,7 +59,7 @@ export function SpotlightCard({
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="sm:hidden flex items-center gap-3 min-h-[64px] rounded-xl border border-white/10 bg-white/[0.04] px-2.5 py-2 active:bg-white/[0.07] transition-colors"
+        className="sm:hidden flex items-center gap-3 min-h-16 rounded-xl border border-white/10 bg-white/4 px-2.5 py-2 active:bg-white/7 transition-colors"
       >
         <CoverImage
           name={title}
@@ -89,7 +89,7 @@ export function SpotlightCard({
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="group panel relative overflow-hidden hover:bg-white/[0.07] transition-all duration-300 px-3 py-4 sm:px-4 sm:py-5 h-full hidden sm:flex flex-col items-center text-center"
+        className="group panel relative overflow-hidden hover:bg-white/7 transition-all duration-300 px-3 py-4 sm:px-4 sm:py-5 h-full hidden sm:flex flex-col items-center text-center"
       >
         <div
           className="absolute inset-0 opacity-40 pointer-events-none scale-110 blur-2xl"
@@ -105,7 +105,7 @@ export function SpotlightCard({
           }
         >
           {!blurUrl ? (
-            <div className="w-full h-full bg-gradient-to-br from-pink-500/30 via-purple-500/20 to-blue-500/30" />
+            <div className="w-full h-full bg-linear-to-br from-pink-500/30 via-purple-500/20 to-blue-500/30" />
           ) : null}
         </div>
         <div className="relative flex flex-col items-center w-full min-w-0 flex-1">
@@ -119,15 +119,15 @@ export function SpotlightCard({
           <p className="text-[10px] uppercase tracking-[0.2em] text-pink-300/80 mt-3 mb-1">
             {label}
           </p>
-          <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-pink-200 transition-colors leading-snug line-clamp-2 min-h-[2.75rem] sm:min-h-[3.25rem] w-full">
+          <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-pink-200 transition-colors leading-snug line-clamp-2 min-h-11 sm:min-h-13 w-full">
             {title}
           </h3>
-          <p className="text-xs text-dark-300 mt-1 line-clamp-1 min-h-[1rem] w-full">
+          <p className="text-xs text-dark-300 mt-1 line-clamp-1 min-h-4 w-full">
             {subtitle || "\u00A0"}
           </p>
           <div className="mt-auto pt-3 w-full">
             <p className="text-xs text-dark-400 tabular-nums">{playsLabel}</p>
-            <p className="text-[11px] text-pink-300/70 mt-1.5 tabular-nums min-h-[1.125rem]">
+            <p className="text-[11px] text-pink-300/70 mt-1.5 tabular-nums min-h-4.5">
               {nudge || "\u00A0"}
             </p>
           </div>

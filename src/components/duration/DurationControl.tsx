@@ -59,7 +59,7 @@ export default function DurationControl({ className = "" }: DurationControlProps
         <div className="overflow-x-auto scrollbar-hide px-4 sm:px-0">
           <div
             ref={railRef}
-            className={`relative flex min-w-max sm:min-w-0 sm:w-full gap-0.5 rounded-2xl border border-white/15 bg-white/[0.07] p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.14)] md:backdrop-blur-2xl transition-opacity ${
+            className={`relative flex min-w-max sm:min-w-0 sm:w-full gap-0.5 rounded-2xl border border-white/15 bg-white/7 p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.14)] md:backdrop-blur-2xl transition-opacity ${
               isPending ? "opacity-90" : ""
             }`}
             role="navigation"
@@ -69,7 +69,7 @@ export default function DurationControl({ className = "" }: DurationControlProps
             {pill ? (
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute top-1 bottom-1 rounded-xl border border-white/40 bg-gradient-to-b from-white/40 via-white/18 to-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.55)] md:backdrop-blur-md transition-[left,width] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                className="pointer-events-none absolute top-1 bottom-1 rounded-xl border border-white/40 bg-linear-to-b from-white/40 via-white/18 to-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.55)] md:backdrop-blur-md transition-[left,width] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"
                 style={{ left: pill.left, width: pill.width }}
               />
             ) : null}

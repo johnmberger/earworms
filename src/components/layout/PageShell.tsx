@@ -28,7 +28,7 @@ type PageShellProps = {
 function Brand({ asLink }: { asLink: boolean }) {
   const mark = (
     <>
-      <span className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-none bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-transparent">
+      <span className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-none bg-linear-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-transparent">
         earworms
       </span>
       <EarwormLogo size="md" crawling={false} className="shrink-0" />
@@ -96,16 +96,16 @@ export default function PageShell({
       : "mx-auto w-full max-w-6xl px-4 sm:px-6 pt-8 pb-16 sm:pt-12 sm:pb-20 lg:pt-14 lg:pb-24";
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-800 relative overflow-hidden">
+    <div className="min-h-screen bg-linear-to-br from-slate-900 via-purple-900 to-slate-800 relative overflow-hidden">
       <div className={`absolute inset-0 ${DOT_BG} opacity-40`} />
-      <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-br from-blue-500/30 via-purple-500/20 to-pink-500/30 rounded-full blur-3xl animate-float" />
+      <div className="absolute top-20 left-10 w-72 h-72 bg-linear-to-br from-blue-500/30 via-purple-500/20 to-pink-500/30 rounded-full blur-3xl animate-float" />
       <div
-        className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-br from-purple-500/25 via-pink-500/20 to-red-500/25 rounded-full blur-3xl animate-float"
+        className="absolute bottom-20 right-10 w-96 h-96 bg-linear-to-br from-purple-500/25 via-pink-500/20 to-red-500/25 rounded-full blur-3xl animate-float"
         style={{ animationDelay: "2s" }}
       />
       {showCenterOrb ? (
         <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-br from-cyan-500/20 via-blue-500/15 to-purple-500/20 rounded-full blur-3xl animate-float"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-linear-to-br from-cyan-500/20 via-blue-500/15 to-purple-500/20 rounded-full blur-3xl animate-float"
           style={{ animationDelay: "4s" }}
         />
       ) : null}

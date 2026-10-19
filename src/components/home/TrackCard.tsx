@@ -26,7 +26,7 @@ export default function TrackCard({
         href={track.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="sm:hidden flex items-center gap-3 min-h-[64px] rounded-xl border border-white/10 bg-white/[0.04] px-2.5 py-2 active:bg-white/[0.07] transition-colors"
+        className="sm:hidden flex items-center gap-3 min-h-16 rounded-xl border border-white/10 bg-white/4 px-2.5 py-2 active:bg-white/7 transition-colors"
       >
         <CoverImage
           name={track.name}
@@ -57,14 +57,14 @@ export default function TrackCard({
       {/* Card grid — sm and up */}
       <div className="group track-card h-full hidden sm:flex flex-col">
         <div className="relative aspect-square overflow-hidden rounded-t-3xl">
-          <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-white/10 to-white/5 opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out z-10" />
-          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/8 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-1000 ease-out z-10" />
+          <div className="absolute inset-0 bg-linear-to-br from-white/5 via-white/10 to-white/5 opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out z-10" />
+          <div className="absolute inset-0 bg-linear-to-tr from-transparent via-white/8 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-1000 ease-out z-10" />
 
           <CoverImage
             name={track.name}
             image={fullArt}
             alt={`${track.name} album art`}
-            className="w-full h-full text-5xl transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+            className="w-full h-full text-5xl transition-transform duration-700 ease-out group-hover:scale-102"
             rounded="rounded-none"
             priority={priority}
           />
@@ -74,7 +74,7 @@ export default function TrackCard({
               href={track.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-9 h-9 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center border border-purple-400/30 hover:from-purple-500/30 hover:to-pink-500/30 hover:scale-110 transition-all duration-300 ease-out md:backdrop-blur-xl"
+              className="w-9 h-9 bg-linear-to-br from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center border border-purple-400/30 hover:from-purple-500/30 hover:to-pink-500/30 hover:scale-110 transition-all duration-300 ease-out md:backdrop-blur-xl"
             >
               <IconExternalLink className="w-4 h-4 text-white" />
             </a>

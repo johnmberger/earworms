@@ -1,48 +1,82 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-@layer base {
-  html {
-    scrollbar-gutter: stable;
+@theme {
+  --color-dark-200: #e2e8f0;
+  --color-dark-300: #cbd5e1;
+  --color-dark-400: #94a3b8;
+  --color-dark-500: #64748b;
+  --color-dark-800: #1e293b;
+
+  --animate-fade-in: fadeIn 0.5s ease-in-out;
+  --animate-slide-up: slideUp 0.5s ease-out;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-now-playing-in: nowPlayingIn 0.45s ease-out;
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
-
-  body {
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  @keyframes slideUp {
+    0% {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
   }
-
-  ::selection {
-    background: rgba(168, 85, 247, 0.35);
-    color: white;
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  @keyframes nowPlayingIn {
+    0% {
+      opacity: 0;
+      transform: translateY(14px) scale(0.96);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
   }
 }
 
-@layer components {
-  /* Shared stats / empty-state surface */
-  .panel {
-    @apply rounded-2xl border border-white/10 bg-white/[0.04] md:backdrop-blur-md;
-  }
+/* Resolved on the element that sets --font-inter (next/font), not on :root. */
+@theme inline {
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+}
 
+@utility panel {
+  /* Shared stats / empty-state surface */
+  @apply rounded-2xl border border-white/10 bg-white/4 md:backdrop-blur-md;
+}
+
+@utility track-card {
   /* Track grid cards — hover lift lives here (no JS hover state) */
-  .track-card {
-    @apply border border-white/10 rounded-3xl md:backdrop-blur-2xl;
-    @apply transition-all duration-700 ease-out;
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.1) 0%,
-      rgba(255, 255, 255, 0.05) 100%
-    );
-    box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1),
-      inset 0 -1px 0 rgba(255, 255, 255, 0.05);
-  }
+  @apply border border-white/10 rounded-3xl md:backdrop-blur-2xl;
+  @apply transition-all duration-700 ease-out;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.05);
 
   @media (hover: hover) {
-    .track-card:hover {
+    &:hover {
       background: linear-gradient(
         135deg,
         rgba(255, 255, 255, 0.15) 0%,
@@ -56,7 +90,9 @@
       transform: translateY(-4px) scale(1.02);
     }
   }
+}
 
+@layer components {
   /* Mobile nav: soundwave bars ↔ X (transform-only — no width/height flip) */
   .menu-toggle {
     @apply relative inline-block shrink-0;
@@ -72,7 +108,8 @@
     align-items: center;
     justify-content: center;
     transform-origin: center center;
-    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    transition:
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
       opacity 0.3s ease;
   }
 
@@ -144,64 +181,80 @@
   .menu-toggle-open .menu-toggle-bar-inner {
     transform: scaleY(1);
   }
+}
 
+@utility eq-bars {
   /* Now-playing EQ — one keyframe, staggered children */
-  .eq-bars {
-    @apply flex items-end gap-0.5 h-4;
-  }
+  @apply flex items-end gap-0.5 h-4;
 
-  .eq-bars > span {
+  & > span {
     @apply w-0.5 bg-white rounded-full;
     height: 1rem;
     transform-origin: bottom;
     animation: eq-bar 1.2s ease-in-out infinite;
   }
 
-  .eq-bars > span:nth-child(2) {
+  & > span:nth-child(2) {
     animation-duration: 1.4s;
     animation-delay: -0.15s;
   }
 
-  .eq-bars > span:nth-child(3) {
+  & > span:nth-child(3) {
     animation-duration: 1.6s;
     animation-delay: -0.3s;
   }
 
-  .eq-bars > span:nth-child(4) {
+  & > span:nth-child(4) {
     animation-duration: 1.3s;
     animation-delay: -0.45s;
   }
 }
 
-@layer utilities {
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
+@utility scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 
-  .scrollbar-hide::-webkit-scrollbar {
+  &::-webkit-scrollbar {
     display: none;
   }
+}
 
-  .animate-cover-shimmer {
-    background: linear-gradient(
-      110deg,
-      rgba(255, 255, 255, 0.04) 25%,
-      rgba(255, 255, 255, 0.12) 37%,
-      rgba(255, 255, 255, 0.04) 63%
-    );
-    background-size: 200% 100%;
-    animation: cover-shimmer 1.4s ease-in-out infinite;
-  }
+@utility animate-cover-shimmer {
+  background: linear-gradient(
+    110deg,
+    rgba(255, 255, 255, 0.04) 25%,
+    rgba(255, 255, 255, 0.12) 37%,
+    rgba(255, 255, 255, 0.04) 63%
+  );
+  background-size: 200% 100%;
+  animation: cover-shimmer 1.4s ease-in-out infinite;
+}
 
+@utility animate-fade-soft {
   /* Soft crossfade for chart hover readouts */
-  .animate-fade-soft {
-    animation: fade-soft 300ms ease-out both;
+  animation: fade-soft 300ms ease-out both;
+}
+
+@utility worm-wave-seg {
+  /* Dense sine samples so the worm motion stays smooth */
+  animation: worm-wave 1.6s linear infinite;
+}
+
+@layer base {
+  html {
+    scrollbar-gutter: stable;
   }
 
-  /* Dense sine samples so the worm motion stays smooth */
-  .worm-wave-seg {
-    animation: worm-wave 1.6s linear infinite;
+  body {
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: rgba(168, 85, 247, 0.35);
+    color: white;
   }
 }
 

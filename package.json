@@ -17,20 +17,20 @@
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
-    "next": "^16.3.3",
+    "next": "^16.4.2",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^22.20.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
-    "autoprefixer": "^10",
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.3.3",
     "postcss": "^8",
-    "tailwindcss": "^3",
+    "tailwindcss": "^4.3.3",
     "typescript": "^5",
     "vitest": "^5.0.1"
   }

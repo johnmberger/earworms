@@ -232,7 +232,7 @@ function DepthDonut({
         </p>
         <p
           key={`plays-${shown?.key ?? "empty"}`}
-          className="text-xs text-dark-300 mt-1 tabular-nums min-h-[1rem] animate-fade-soft"
+          className="text-xs text-dark-300 mt-1 tabular-nums min-h-4 animate-fade-soft"
         >
           {shown
             ? `${formatNumber(shown.plays)} ${
@@ -361,7 +361,7 @@ function WhenPanel({ timing }: { timing: ListeningTiming }) {
       </p>
       <p
         key={`when-sub-${activeHour}-${isPeakDefault ? "peak" : "hover"}`}
-        className="text-xs text-dark-400 mb-4 min-h-[1.25rem] animate-fade-soft"
+        className="text-xs text-dark-400 mb-4 min-h-5 animate-fade-soft"
       >
         {isPeakDefault ? (
           <>busiest hour (ET) · {timing.peakSharePercent}% of recent plays</>
@@ -386,7 +386,7 @@ function WhenPanel({ timing }: { timing: ListeningTiming }) {
             <button
               key={hour}
               type="button"
-              className={`relative flex-1 min-w-0 rounded-sm transition-[opacity,transform,background-color] duration-300 ease-out focus:outline-none focus-visible:ring-1 focus-visible:ring-pink-300/60 ${
+              className={`relative flex-1 min-w-0 rounded-xs transition-[opacity,transform,background-color] duration-300 ease-out focus:outline-hidden focus-visible:ring-1 focus-visible:ring-pink-300/60 ${
                 isActive
                   ? "bg-pink-400"
                   : isPeak

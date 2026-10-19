@@ -8,9 +8,9 @@ interface EarwormLogoProps {
 }
 
 const sizeMap = {
-  sm: "w-12 sm:w-14 aspect-[140/72]",
-  md: "w-16 sm:w-24 lg:w-28 aspect-[140/72]",
-  lg: "w-24 sm:w-32 lg:w-36 aspect-[140/72]",
+  sm: "w-12 sm:w-14 aspect-140/72",
+  md: "w-16 sm:w-24 lg:w-28 aspect-140/72",
+  lg: "w-24 sm:w-32 lg:w-36 aspect-140/72",
 };
 
 const SEGMENTS = 12;

@@ -12,7 +12,7 @@ export function StatCard({
       <p className="text-[10px] uppercase tracking-[0.2em] text-pink-300/80 mb-3">
         {label}
       </p>
-      <p className="text-2xl sm:text-3xl font-bold text-white tabular-nums leading-tight tracking-tight break-words">
+      <p className="text-2xl sm:text-3xl font-bold text-white tabular-nums leading-tight tracking-tight wrap-break-word">
         {value}
       </p>
       {hint ? (

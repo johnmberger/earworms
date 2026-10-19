@@ -39,7 +39,7 @@ export default function CoverImage({
   if (showFallback) {
     return (
       <div
-        className={`${className} ${rounded} bg-gradient-to-br from-pink-500/40 via-purple-500/40 to-blue-500/40 flex items-center justify-center text-white font-bold shrink-0`}
+        className={`${className} ${rounded} bg-linear-to-br from-pink-500/40 via-purple-500/40 to-blue-500/40 flex items-center justify-center text-white font-bold shrink-0`}
         aria-hidden={alt ? undefined : true}
         role={alt ? "img" : undefined}
         aria-label={alt || undefined}

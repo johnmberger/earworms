@@ -237,7 +237,7 @@ function TopsBody({ artists, albums, tracks, period, wow }: TopsPageProps) {
                 album covers
               </h2>
               <div className="relative -mx-4 sm:-mx-6">
-                <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-hide px-4 sm:px-6 [mask-image:linear-gradient(90deg,transparent_0%,#000_3rem,#000_calc(100%-3rem),transparent_100%)] [-webkit-mask-image:linear-gradient(90deg,transparent_0%,#000_3rem,#000_calc(100%-3rem),transparent_100%)]">
+                <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-hide px-4 sm:px-6 mask-[linear-gradient(90deg,transparent_0%,#000_3rem,#000_calc(100%-3rem),transparent_100%)] [-webkit-mask-image:linear-gradient(90deg,transparent_0%,#000_3rem,#000_calc(100%-3rem),transparent_100%)]">
                   <div className="shrink-0 w-2 sm:w-3" aria-hidden="true" />
                   {albums.slice(0, 20).map((album) => (
                     <a
@@ -251,7 +251,7 @@ function TopsBody({ artists, albums, tracks, period, wow }: TopsPageProps) {
                       <CoverImage
                         name={album.name}
                         image={sizedLastfmImage(album.image, "tile")}
-                        className="w-28 h-28 sm:w-32 sm:h-32 shadow-lg shadow-black/30 group-hover:scale-[1.03] transition-transform duration-300"
+                        className="w-28 h-28 sm:w-32 sm:h-32 shadow-lg shadow-black/30 group-hover:scale-103 transition-transform duration-300"
                         rounded="rounded-2xl"
                       />
                       <p className="mt-2 text-xs text-white truncate group-hover:text-pink-300 transition-colors">
