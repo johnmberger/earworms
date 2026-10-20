@@ -5,6 +5,7 @@ import {
 } from "@/lib/lastfm/images";
 import { formatNumber } from "@/lib/format";
 import { IconExternalLink } from "@/components/shared/icons";
+import { ClippedText } from "@/components/shared/ClippedText";
 
 function ShareBar({
   value,
@@ -67,13 +68,16 @@ export function SpotlightCard({
           <p className="text-[10px] uppercase tracking-[0.16em] text-pink-300/80 truncate">
             {label}
           </p>
-          <p className="font-semibold text-white text-sm leading-snug truncate mt-0.5">
-            {title}
-          </p>
-          <p className="text-xs text-dark-300 truncate mt-0.5">
-            {subtitle ? `${subtitle} · ${playsLabel}` : playsLabel}
-            {nudge ? ` · ${nudge}` : ""}
-          </p>
+          <ClippedText
+            className="font-semibold text-white text-sm leading-snug truncate mt-0.5"
+            text={title}
+          />
+          <ClippedText
+            className="text-xs text-dark-300 truncate mt-0.5"
+            text={`${subtitle ? `${subtitle} · ${playsLabel}` : playsLabel}${
+              nudge ? ` · ${nudge}` : ""
+            }`}
+          />
         </div>
         <a
           href={href}
@@ -121,12 +125,15 @@ export function SpotlightCard({
           <p className="text-[10px] uppercase tracking-[0.2em] text-pink-300/80 mt-3 mb-1">
             {label}
           </p>
-          <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-pink-200 transition-colors leading-snug line-clamp-2 min-h-11 sm:min-h-13 w-full">
-            {title}
-          </h3>
-          <p className="text-xs text-dark-300 mt-1 line-clamp-1 min-h-4 w-full">
-            {subtitle || "\u00A0"}
-          </p>
+          <ClippedText
+            as="h3"
+            className="text-base sm:text-lg font-bold text-white group-hover:text-pink-200 transition-colors leading-snug line-clamp-2 min-h-11 sm:min-h-13 w-full"
+            text={title}
+          />
+          <ClippedText
+            className="text-xs text-dark-300 mt-1 line-clamp-1 min-h-4 w-full"
+            text={subtitle || "\u00A0"}
+          />
           <div className="mt-auto pt-3 w-full">
             <p className="text-xs text-dark-400 tabular-nums">{playsLabel}</p>
             <p className="text-[11px] text-pink-300/70 mt-1.5 tabular-nums min-h-4.5">
@@ -171,12 +178,14 @@ export function RankRow({
       <div className="flex-1 min-w-0">
         <div className="flex items-baseline justify-between gap-2 mb-1">
           <div className="min-w-0">
-            <p className="font-medium text-white truncate group-hover:text-pink-300 transition-colors text-sm sm:text-base">
-              {title}
-            </p>
-            <p className="text-xs text-dark-400 truncate">
-              {subtitle || "\u00A0"}
-            </p>
+            <ClippedText
+              className="font-medium text-white truncate group-hover:text-pink-300 transition-colors text-sm sm:text-base"
+              text={title}
+            />
+            <ClippedText
+              className="text-xs text-dark-400 truncate"
+              text={subtitle || "\u00A0"}
+            />
           </div>
           <span className="text-xs sm:text-sm text-dark-400 tabular-nums shrink-0">
             {formatNumber(plays)} {plays === 1 ? "play" : "plays"}

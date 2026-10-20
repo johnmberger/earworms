@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { formatNumber } from "@/lib/format";
 import type { ChartDepth } from "@/lib/listening";
+import { ClippedText } from "@/components/shared/ClippedText";
 
 const DEPTH_COLORS = [
   "#f472b6", // pink-400
@@ -163,12 +164,11 @@ function DepthDonut({
         >
           {shown ? `${shown.sharePercent}%` : "—"}
         </p>
-        <p
+        <ClippedText
           key={`label-${shown?.key ?? "empty"}`}
           className="text-[10px] uppercase tracking-[0.14em] text-dark-400 mt-1.5 truncate max-w-full animate-fade-soft"
-        >
-          {shown ? shown.label : "depth"}
-        </p>
+          text={shown ? shown.label : "depth"}
+        />
         <p
           key={`plays-${shown?.key ?? "empty"}`}
           className="text-xs text-dark-300 mt-1 tabular-nums min-h-4 animate-fade-soft"
@@ -249,13 +249,13 @@ export function DepthPanel({ depth }: { depth: ChartDepth }) {
                             transform: active ? "scale(1.25)" : "scale(1)",
                           }}
                         />
-                        <span
+                        <ClippedText
+                          as="span"
                           className={`truncate ${
                             slice.key === "__rest" ? "text-dark-400" : ""
                           }`}
-                        >
-                          {slice.label}
-                        </span>
+                          text={slice.label}
+                        />
                       </span>
                       <span className="text-xs text-dark-400 tabular-nums shrink-0">
                         {slice.sharePercent}%

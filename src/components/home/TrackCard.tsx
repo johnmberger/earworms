@@ -3,6 +3,7 @@ import CoverImage from "@/components/shared/CoverImage";
 import { IconExternalLink } from "@/components/shared/icons";
 import { pickImageUrl, sizedLastfmImage } from "@/lib/lastfm/images";
 import { formatTrackDate } from "@/lib/format";
+import { ClippedText } from "@/components/shared/ClippedText";
 
 interface TrackCardProps {
   track: Track;
@@ -32,10 +33,14 @@ export default function TrackCard({
           priority={priority}
         />
         <div className="min-w-0 flex-1">
-          <p className="font-semibold text-white text-sm leading-snug truncate">
-            {track.name}
-          </p>
-          <p className="text-blue-200/90 text-xs truncate mt-0.5">{artist}</p>
+          <ClippedText
+            className="font-semibold text-white text-sm leading-snug truncate"
+            text={track.name}
+          />
+          <ClippedText
+            className="text-blue-200/90 text-xs truncate mt-0.5"
+            text={artist}
+          />
           {track.date?.uts ? (
             <p className="text-[11px] text-cyan-300/80 truncate mt-0.5">
               {formatTrackDate(track.date.uts)}
@@ -82,16 +87,20 @@ export default function TrackCard({
 
         <div className="p-6 space-y-5 flex-1 flex flex-col justify-between">
           <div className="space-y-2">
-            <h3 className="font-semibold text-white text-xl leading-tight line-clamp-2 group-hover:text-pink-300 transition-all duration-500 ease-out">
-              {track.name}
-            </h3>
-            <p className="text-blue-200 text-sm font-medium line-clamp-1 group-hover:text-blue-100 transition-all duration-500 ease-out">
-              {artist}
-            </p>
+            <ClippedText
+              as="h3"
+              className="font-semibold text-white text-xl leading-tight line-clamp-2 group-hover:text-pink-300 transition-all duration-500 ease-out"
+              text={track.name}
+            />
+            <ClippedText
+              className="text-blue-200 text-sm font-medium line-clamp-1 group-hover:text-blue-100 transition-all duration-500 ease-out"
+              text={artist}
+            />
             {album ? (
-              <p className="text-purple-200 text-xs line-clamp-1 group-hover:text-purple-100 transition-all duration-500 ease-out">
-                {album}
-              </p>
+              <ClippedText
+                className="text-purple-200 text-xs line-clamp-1 group-hover:text-purple-100 transition-all duration-500 ease-out"
+                text={album}
+              />
             ) : null}
           </div>
 

@@ -2,6 +2,7 @@ import { formatNumber } from "@/lib/format";
 import type { ChartDepth, ChartOverlap, ListeningTiming } from "@/lib/listening";
 import type { UserInfo } from "@/lib/schemas";
 import { StatCard } from "@/components/shared/StatCard";
+import { ClippedText } from "@/components/shared/ClippedText";
 import { DepthPanel } from "@/components/me/DepthChart";
 import { WhenPanel } from "@/components/me/WhenChart";
 
@@ -29,13 +30,15 @@ function EarwormsPanel({ overlap }: { overlap: ChartOverlap | null }) {
             ];
             return (
               <li key={hit.artist} className="min-w-0">
-                <p className="font-semibold text-white truncate">
-                  {hit.artist}
-                </p>
+                <ClippedText
+                  className="font-semibold text-white truncate"
+                  text={hit.artist}
+                />
                 {pieces.length > 0 ? (
-                  <p className="text-xs text-dark-300 truncate mt-0.5">
-                    {pieces.join(" · ")}
-                  </p>
+                  <ClippedText
+                    className="text-xs text-dark-300 truncate mt-0.5"
+                    text={pieces.join(" · ")}
+                  />
                 ) : null}
               </li>
             );

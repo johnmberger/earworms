@@ -2,6 +2,7 @@ import { Track } from "@/lib/lastfm";
 import CoverImage from "@/components/shared/CoverImage";
 import { IconExternalLink } from "@/components/shared/icons";
 import { pickImageUrl, sizedLastfmImage } from "@/lib/lastfm/images";
+import { ClippedText } from "@/components/shared/ClippedText";
 
 export default function NowPlayingStrip({ track }: { track: Track }) {
   const art = sizedLastfmImage(pickImageUrl(track.image, "thumb"), "thumb");
@@ -39,19 +40,14 @@ export default function NowPlayingStrip({ track }: { track: Track }) {
               currently playing
             </p>
           </div>
-          <p
+          <ClippedText
             className="font-semibold text-white truncate group-hover:text-pink-200 transition-colors text-sm sm:text-base"
-            title={track.name}
-          >
-            {track.name}
-          </p>
-          <p
+            text={track.name}
+          />
+          <ClippedText
             className="text-xs sm:text-sm text-dark-300 truncate"
-            title={[artist, album].filter(Boolean).join(" · ")}
-          >
-            {artist}
-            {album ? ` · ${album}` : ""}
-          </p>
+            text={[artist, album].filter(Boolean).join(" · ")}
+          />
         </div>
         <IconExternalLink className="w-4 h-4 text-dark-400 group-hover:text-pink-300 transition-colors shrink-0 hidden sm:block" />
       </a>
