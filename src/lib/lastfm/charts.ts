@@ -19,7 +19,7 @@ import { pickImageUrl } from "./images";
 import {
   CHART_CACHE_TTL_SECONDS,
   withTtlCache,
-} from "../ttlCache";
+} from "./cache";
 
 export async function getTopArtists({
   period = "7day",

@@ -1,5 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
-import { SPLASH_KEY, SPLASH_PENDING_CLASS } from "@/lib/splash";
+import { SPLASH_KEY, SPLASH_PENDING_CLASS } from "@/lib/site";
 
 const splashBootCss = `html.${SPLASH_PENDING_CLASS}::before{content:"";position:fixed;inset:0;z-index:40;pointer-events:none;background:linear-gradient(to bottom right,#0f172a,#581c87,#1e293b)}`;
 

@@ -4,7 +4,7 @@ import {
   RECENT_TRACKS_DISPLAY_LIMIT,
   isNowPlayingTrack,
   takeRecentTracksForDisplay,
-} from "@/lib/recentTracks";
+} from "@/lib/home";
 
 function track(name: string, nowPlaying = false): Track {
   return {

@@ -8,7 +8,7 @@ export const SITE_NAME = "earworms";
 export const OG_IMAGE_PATH = "/og.png";
 export const OG_IMAGE_WIDTH = "1200";
 export const OG_IMAGE_HEIGHT = "630";
-export const OG_IMAGE_ALT = "earworms — songs that get stuck in your head";
+export const OG_IMAGE_ALT = "earworms — songs that get stuck in my head";
 
 export const DEFAULT_META = {
   title: SITE_NAME,
@@ -17,7 +17,7 @@ export const DEFAULT_META = {
   /** Short line for Slack / iMessage / social previews */
   ogDescription: "the songs that get stuck in my head",
   keywords:
-    "earworms, music, listening history, music discovery, recently played, music obsession, guilty pleasures, music taste",
+    "earworms, music, listening history, music discovery, recently played, music obsession, guilty pleasures, music taste, john berger, john berger's earworms, atlanta",
   image: `${SITE_URL}${OG_IMAGE_PATH}`,
   imageWidth: OG_IMAGE_WIDTH,
   imageHeight: OG_IMAGE_HEIGHT,

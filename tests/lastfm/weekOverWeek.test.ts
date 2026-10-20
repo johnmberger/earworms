@@ -4,7 +4,7 @@ import {
   playsFromWeeklyEntries,
   releaseChartKey,
   weekOverWeekPlaysNudge,
-} from "@/lib/weekOverWeek";
+} from "@/lib/lastfm/weekOverWeek";
 
 describe("weekOverWeekPlaysNudge", () => {
   it("uses more/less percent than last week", () => {

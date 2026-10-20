@@ -3,7 +3,7 @@ import {
   LASTFM_IMAGE_PLACEHOLDER,
   sizedLastfmImage,
 } from "@/lib/lastfm/images";
-import { formatNumber } from "@/lib/dateUtils";
+import { formatNumber } from "@/lib/format";
 import { IconExternalLink } from "@/components/shared/icons";
 
 function ShareBar({
@@ -54,13 +54,8 @@ export function SpotlightCard({
 
   return (
     <>
-      {/* Dense list row — mobile only */}
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="sm:hidden flex items-center gap-3 min-h-16 rounded-xl border border-white/10 bg-white/4 px-2.5 py-2 active:bg-white/7 transition-colors"
-      >
+      {/* Dense list row — mobile only. The row is display; only the icon links out. */}
+      <div className="sm:hidden list-row">
         <CoverImage
           name={title}
           image={thumbUrl}
@@ -80,9 +75,16 @@ export function SpotlightCard({
             {nudge ? ` · ${nudge}` : ""}
           </p>
         </div>
-        <IconExternalLink className="w-3.5 h-3.5 text-dark-500 shrink-0" />
-        <span className="sr-only">Open on Last.fm</span>
-      </a>
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Open ${title} on Last.fm`}
+          className="flex size-11 shrink-0 items-center justify-center -mr-1.5 rounded-lg text-dark-500 transition-colors hover:text-pink-300 active:bg-white/7"
+        >
+          <IconExternalLink className="w-3.5 h-3.5" />
+        </a>
+      </div>
 
       {/* Spotlight card — sm and up */}
       <a

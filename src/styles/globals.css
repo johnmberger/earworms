@@ -61,6 +61,11 @@
   @apply rounded-2xl border border-white/10 bg-white/4 md:backdrop-blur-md;
 }
 
+@utility list-row {
+  /* Dense mobile track / chart row */
+  @apply flex items-center gap-3 min-h-16 rounded-xl border border-white/10 bg-white/4 px-2.5 py-2;
+}
+
 @utility track-card {
   /* Track grid cards — hover lift lives here (no JS hover state) */
   @apply border border-white/10 rounded-3xl md:backdrop-blur-2xl;
@@ -255,6 +260,12 @@
   ::selection {
     background: rgba(168, 85, 247, 0.35);
     color: white;
+  }
+
+  /* v4 preflight uses the browser default cursor on buttons */
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
   }
 }
 

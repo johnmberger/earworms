@@ -14,7 +14,7 @@ import {
 import {
   CHART_CACHE_TTL_SECONDS,
   withTtlCache,
-} from "../ttlCache";
+} from "./cache";
 import { getChartTops } from "./charts";
 import { getRecentTracks } from "./recent";
 import { getUserInfo } from "./user";

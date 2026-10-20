@@ -7,8 +7,8 @@ import {
   TopAlbumView,
   TopTrackView,
   type SpotlightWeekOverWeek,
+  CHART_PAGE_CACHE_CONTROL,
 } from "@/lib/lastfm";
-import { CHART_PAGE_CACHE_CONTROL } from "@/lib/ttlCache";
 import EmptyState from "@/components/layout/EmptyState";
 import CoverImage from "@/components/shared/CoverImage";
 import DurationControl from "@/components/duration/DurationControl";
@@ -20,7 +20,7 @@ import MetaTags from "@/components/layout/MetaTags";
 import PageShell, { PageFooterLinks } from "@/components/layout/PageShell";
 import { TopPeriodSkeleton } from "@/components/top/TopPeriodSkeleton";
 import { RankRow, SpotlightCard } from "@/components/top/ChartCards";
-import { getArtistChartStats } from "@/lib/chartStats";
+import { getArtistChartStats } from "@/lib/listening";
 import { sizedLastfmImage } from "@/lib/lastfm/images";
 import {
   ChartPeriod,

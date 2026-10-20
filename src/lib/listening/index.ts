@@ -24,6 +24,9 @@ export {
 
 export { averagePlaysPerDay, formatAccountAge } from "./account";
 
+export type { ArtistChartStats } from "./chartStats";
+export { getArtistChartStats } from "./chartStats";
+
 export type ListeningStats = {
   profile: UserInfo | null;
   accountAgeLabel: string | null;

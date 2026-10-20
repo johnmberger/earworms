@@ -1,7 +1,7 @@
 import { Track } from "@/lib/lastfm";
 import TrackCard from "@/components/home/TrackCard";
 import NowPlayingStrip from "@/components/home/NowPlayingStrip";
-import { isNowPlayingTrack } from "@/lib/recentTracks";
+import { isNowPlayingTrack } from "@/lib/home";
 
 function trackKey(track: Track, index: number): string {
   const artist = track.artist?.["#text"] ?? "";

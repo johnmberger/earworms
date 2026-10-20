@@ -1,6 +1,9 @@
 import { GetServerSideProps } from "next";
-import { getListeningStats, ListeningStats } from "@/lib/lastfm";
-import { CHART_PAGE_CACHE_CONTROL } from "@/lib/ttlCache";
+import {
+  CHART_PAGE_CACHE_CONTROL,
+  getListeningStats,
+  ListeningStats,
+} from "@/lib/lastfm";
 import DurationControl from "@/components/duration/DurationControl";
 import {
   DurationPendingProvider,

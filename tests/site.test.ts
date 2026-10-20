@@ -5,7 +5,7 @@ import {
   SITE_URL,
   resolveOgImage,
   toAbsoluteUrl,
-} from "@/lib/siteMeta";
+} from "@/lib/site";
 
 describe("toAbsoluteUrl", () => {
   it("defaults to the site root", () => {

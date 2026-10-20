@@ -2,7 +2,7 @@ import { Track } from "@/lib/lastfm";
 import CoverImage from "@/components/shared/CoverImage";
 import { IconExternalLink } from "@/components/shared/icons";
 import { pickImageUrl, sizedLastfmImage } from "@/lib/lastfm/images";
-import { formatTrackDate } from "@/lib/dateUtils";
+import { formatTrackDate } from "@/lib/format";
 
 interface TrackCardProps {
   track: Track;
@@ -21,13 +21,8 @@ export default function TrackCard({
 
   return (
     <>
-      {/* Dense list row — mobile only */}
-      <a
-        href={track.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="sm:hidden flex items-center gap-3 min-h-16 rounded-xl border border-white/10 bg-white/4 px-2.5 py-2 active:bg-white/7 transition-colors"
-      >
+      {/* Dense list row — mobile only. The row is display; only the icon links out. */}
+      <div className="sm:hidden list-row">
         <CoverImage
           name={track.name}
           image={thumbArt}
@@ -47,12 +42,16 @@ export default function TrackCard({
             </p>
           ) : null}
         </div>
-        <IconExternalLink
-          className="w-3.5 h-3.5 text-dark-500 shrink-0"
-          aria-hidden
-        />
-        <span className="sr-only">Open on Last.fm</span>
-      </a>
+        <a
+          href={track.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Open ${track.name} on Last.fm`}
+          className="flex size-11 shrink-0 items-center justify-center -mr-1.5 rounded-lg text-dark-500 transition-colors hover:text-pink-300 active:bg-white/7"
+        >
+          <IconExternalLink className="w-3.5 h-3.5" />
+        </a>
+      </div>
 
       {/* Card grid — sm and up */}
       <div className="group track-card h-full hidden sm:flex flex-col">

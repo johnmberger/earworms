@@ -4,7 +4,7 @@ import {
   SITE_NAME,
   resolveOgImage,
   toAbsoluteUrl,
-} from "@/lib/siteMeta";
+} from "@/lib/site";
 
 export type MetaTagsProps = {
   title?: string;

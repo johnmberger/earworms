@@ -10,7 +10,7 @@ import { asArray, lastfmRequest } from "./request";
 import {
   CHART_CACHE_TTL_SECONDS,
   withTtlCache,
-} from "../ttlCache";
+} from "./cache";
 import {
   artistChartKey,
   lookupPlays,
@@ -18,7 +18,7 @@ import {
   releaseChartKey,
   weekOverWeekPlaysNudge,
   type WeekOverWeekNudge,
-} from "../weekOverWeek";
+} from "./weekOverWeek";
 
 export type SpotlightWeekOverWeek = {
   artist: WeekOverWeekNudge | null;

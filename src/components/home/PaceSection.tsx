@@ -1,4 +1,4 @@
-import { formatNumber } from "@/lib/dateUtils";
+import { formatNumber } from "@/lib/format";
 import type { ListeningDensity } from "@/lib/listening";
 import { StatCard } from "@/components/shared/StatCard";
 

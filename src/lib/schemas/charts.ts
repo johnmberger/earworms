@@ -2,7 +2,7 @@ import { z } from "zod";
 import type { ChartPeriod } from "../period";
 import { trackImageSchema } from "./base";
 
-// Top Artists schemas — Last.fm sometimes omits/empties fields
+// Chart payloads — artists, albums, and tracks. Last.fm sometimes omits fields.
 export const topArtistSchema = z.object({
   name: z.string(),
   playcount: z.string(),

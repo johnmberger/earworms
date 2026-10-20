@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { clearTtlCache, withTtlCache } from "@/lib/ttlCache";
+import { clearTtlCache, withTtlCache } from "@/lib/lastfm/cache";
 
 afterEach(() => {
   clearTtlCache();
