@@ -8,7 +8,7 @@ export function MePeriodSkeleton() {
         <div className="panel px-4 py-5 sm:px-5 sm:py-6">
           <Skeleton className="h-2.5 w-14 mb-5" />
           <div className="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-10">
-            <Skeleton className="w-[200px] h-[200px] rounded-full mx-auto sm:mx-0 shrink-0" />
+            <Skeleton className="w-50 h-50 rounded-full mx-auto sm:mx-0 shrink-0" />
             <div className="min-w-0 flex-1 w-full">
               <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-5 max-w-lg">
                 <div>

@@ -112,7 +112,7 @@ function DepthDonut({
       : null;
 
   return (
-    <div className="relative mx-auto sm:mx-0 w-[200px] h-[200px] shrink-0">
+    <div className="relative mx-auto sm:mx-0 w-50 h-50 shrink-0">
       <svg
         width={size}
         height={size}
