@@ -1,4 +1,4 @@
-import { createElement, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useLayoutEffect, useRef, useState } from "react";
 
 const CLIP_SLOP = 1;
 
@@ -17,7 +17,10 @@ export function ClippedText({
   text: string;
   className?: string;
 }) {
-  const ref = useRef<HTMLElement>(null);
+  const ref = useRef<HTMLElement | null>(null);
+  const setRef = useCallback((node: HTMLElement | null) => {
+    ref.current = node;
+  }, []);
   const [clipped, setClipped] = useState(false);
 
   useLayoutEffect(() => {
@@ -47,9 +50,24 @@ export function ClippedText({
     };
   }, [text]);
 
-  return createElement(
-    as,
-    { ref, className, title: clipped ? text : undefined },
-    text
+  const title = clipped ? text : undefined;
+  if (as === "h3") {
+    return (
+      <h3 ref={setRef} className={className} title={title}>
+        {text}
+      </h3>
+    );
+  }
+  if (as === "span") {
+    return (
+      <span ref={setRef} className={className} title={title}>
+        {text}
+      </span>
+    );
+  }
+  return (
+    <p ref={setRef} className={className} title={title}>
+      {text}
+    </p>
   );
 }
